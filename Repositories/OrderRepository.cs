@@ -1,0 +1,70 @@
+﻿using HoshiVibe.DB;
+using HoshiVibe.Entities.Models.Base;
+using Microsoft.EntityFrameworkCore;
+
+namespace HoshiVibe.Repository
+{
+    public class OrderRepository
+    {
+        DataContext _context;
+        public OrderRepository(DataContext context)
+        {
+            _context = context;
+        }
+
+        public bool OrderExists(string id)
+        {
+            return _context.Orders.Any(u => u.Order_Id == id);
+        }
+
+        public ICollection<Order> GetAllOrders()
+        {
+            return _context.Orders
+                 .Include(o => o.OrderDetails)
+                .OrderBy(o => o.OrderDate)
+                .ToList();
+        }
+        public Order? GetOrderById(string id)
+        {
+            return _context.Orders
+                 .Include(o => o.OrderDetails)
+                .FirstOrDefault(o => o.Order_Id == id);
+        }
+        public Order? GetOrderByUserId(Guid id)
+        {
+            return _context.Orders
+                 .Include(o => o.OrderDetails)
+                .FirstOrDefault(o => o.User_Id == id);
+        }
+        public ICollection<Order> GetPendingOrders()
+        {
+            return _context.Orders
+                .Include(o => o.OrderDetails)
+                .Where(o => o.Status == "Pending")
+                .ToList();
+        }
+
+        public bool CreateOrder(Order order)
+        {
+            _context.Orders.Add(order);
+            return Save();
+        }
+
+        public bool UpdateOrder(Order order)
+        {
+            _context.Orders.Update(order);
+            return Save();
+        }
+
+        public bool DeleteOrder(Order order)
+        {
+            _context.Orders.Remove(order);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() > 0;
+        }
+    }
+}

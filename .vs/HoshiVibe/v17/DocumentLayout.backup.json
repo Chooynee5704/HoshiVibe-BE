@@ -1,0 +1,156 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|d:\\semester_8\\exe201\\hoshivibe\\service\\userprofileservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|solutionrelative:service\\userprofileservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|d:\\semester_8\\exe201\\hoshivibe\\controllers\\userprofilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|solutionrelative:controllers\\userprofilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|d:\\semester_8\\exe201\\hoshivibe\\repositories\\userprofilerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|solutionrelative:repositories\\userprofilerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|d:\\semester_8\\exe201\\hoshivibe\\entities\\dto\\modeldto\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|solutionrelative:entities\\dto\\modeldto\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|d:\\semester_8\\exe201\\hoshivibe\\entities\\dto\\modeldto\\userprofiledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|solutionrelative:entities\\dto\\modeldto\\userprofiledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|d:\\semester_8\\exe201\\hoshivibe\\db\\datacontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|solutionrelative:db\\datacontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|d:\\semester_8\\exe201\\hoshivibe\\mapper\\mappingfile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|solutionrelative:mapper\\mappingfile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|d:\\semester_8\\exe201\\hoshivibe\\entities\\models\\base\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1723E643-51A6-4082-B19B-EF9E64C8DF13}|HoshiVibe.csproj|solutionrelative:entities\\models\\base\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserProfileDTO.cs",
+              "DocumentMoniker": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Entities\\DTO\\ModelDTO\\UserProfileDTO.cs",
+              "RelativeDocumentMoniker": "Entities\\DTO\\ModelDTO\\UserProfileDTO.cs",
+              "ToolTip": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Entities\\DTO\\ModelDTO\\UserProfileDTO.cs",
+              "RelativeToolTip": "Entities\\DTO\\ModelDTO\\UserProfileDTO.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAYwBIAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-05T06:12:44.123Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserDTO.cs",
+              "DocumentMoniker": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Entities\\DTO\\ModelDTO\\UserDTO.cs",
+              "RelativeDocumentMoniker": "Entities\\DTO\\ModelDTO\\UserDTO.cs",
+              "ToolTip": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Entities\\DTO\\ModelDTO\\UserDTO.cs",
+              "RelativeToolTip": "Entities\\DTO\\ModelDTO\\UserDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-05T06:12:09.937Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "User.cs",
+              "DocumentMoniker": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Entities\\Models\\Base\\User.cs",
+              "RelativeDocumentMoniker": "Entities\\Models\\Base\\User.cs",
+              "ToolTip": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Entities\\Models\\Base\\User.cs",
+              "RelativeToolTip": "Entities\\Models\\Base\\User.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAowBUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-05T06:11:50.349Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserProfileRepository.cs",
+              "DocumentMoniker": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Repositories\\UserProfileRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\UserProfileRepository.cs",
+              "ToolTip": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Repositories\\UserProfileRepository.cs",
+              "RelativeToolTip": "Repositories\\UserProfileRepository.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-05T06:11:23.01Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserProfileService.cs",
+              "DocumentMoniker": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Service\\UserProfileService.cs",
+              "RelativeDocumentMoniker": "Service\\UserProfileService.cs",
+              "ToolTip": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Service\\UserProfileService.cs",
+              "RelativeToolTip": "Service\\UserProfileService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-05T06:11:11.84Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DataContext.cs",
+              "DocumentMoniker": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\DB\\DataContext.cs",
+              "RelativeDocumentMoniker": "DB\\DataContext.cs",
+              "ToolTip": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\DB\\DataContext.cs",
+              "RelativeToolTip": "DB\\DataContext.cs",
+              "ViewState": "AgIAAHsAAAAAAAAAAAAqwIYAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-05T06:32:00.593Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserProfileController.cs",
+              "DocumentMoniker": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Controllers\\UserProfileController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UserProfileController.cs",
+              "ToolTip": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Controllers\\UserProfileController.cs",
+              "RelativeToolTip": "Controllers\\UserProfileController.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAAB8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-05T06:34:19.217Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MappingFile.cs",
+              "DocumentMoniker": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Mapper\\MappingFile.cs",
+              "RelativeDocumentMoniker": "Mapper\\MappingFile.cs",
+              "ToolTip": "D:\\SEMESTER_8\\EXE201\\HoshiVibe\\Mapper\\MappingFile.cs",
+              "RelativeToolTip": "Mapper\\MappingFile.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAqwD8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-05T06:18:22.222Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
