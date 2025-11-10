@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HoshiVibe.Entities.DTO.ModelRequests.Product;
 using HoshiVibe.Entities.DTO.ModelRequests.User;
 using HoshiVibe.Entity.DTO.ModelDTO;
@@ -26,6 +26,20 @@ namespace HoshiVibe.Controllers
         public IActionResult SearchProducts([FromQuery] string? query)
         {
             var products = _productService.Search(query ?? string.Empty);
+            return Ok(products);
+        }
+
+        [HttpGet("proposed-product")]
+        public IActionResult GetProposedProducts([FromQuery] string destiny)
+        {
+            if (string.IsNullOrEmpty(destiny))
+                return BadRequest(new { message = "Destiny is required" });
+
+            var products = _productService.GetProposedProducts(destiny);
+
+            if (products == null || !products.Any())
+                return NotFound(new { message = "No suitable products found" });
+
             return Ok(products);
         }
 

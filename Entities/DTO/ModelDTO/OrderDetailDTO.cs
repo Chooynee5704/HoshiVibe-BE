@@ -1,4 +1,4 @@
-﻿using HoshiVibe.Entities.Models.Base;
+using HoshiVibe.Entities.Models.Base;
 
 namespace HoshiVibe.Entity.Model
 {
@@ -7,7 +7,8 @@ namespace HoshiVibe.Entity.Model
         public Guid OrderDetailId { get; set; }
         public string? OrderId { get; set; }
         
-        public Guid ProductId { get; set; }
+        public Guid? ProductId { get; set; }
+        public Guid? CProductId { get; set; }
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }

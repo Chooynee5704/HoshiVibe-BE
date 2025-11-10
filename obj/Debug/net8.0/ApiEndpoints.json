@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003C\u003CMain\u003E$\u003Eb__0_6",
+    "RelativePath": "",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "HoshiVibe.Controllers.AuthenticationController",
     "Method": "ConfirmResetPassword",
     "RelativePath": "api/Authentication/forgot-password/confirm",
@@ -58,6 +74,148 @@
       {
         "Name": "request",
         "Type": "HoshiVibe.Entities.DTO.ModelRequests.User.RegisterDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.DashBoardController",
+    "Method": "GetSummaryOrder",
+    "RelativePath": "api/DashBoard/get-summary-order{productId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.DashBoardController",
+    "Method": "GetTopSellingProducts",
+    "RelativePath": "api/DashBoard/get-top-selling-product{top}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "top",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.DashBoardController",
+    "Method": "GetMonthlyOrderStatistics",
+    "RelativePath": "api/DashBoard/monthly-order-stats",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.DashBoardController",
+    "Method": "GetMostAddedProducts",
+    "RelativePath": "api/DashBoard/most-added-products",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "topN",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.DashBoardController",
+    "Method": "GetTotalOrdersByMonth",
+    "RelativePath": "api/DashBoard/orders-by-month",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "month",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.DashBoardController",
+    "Method": "GetDashboardStats",
+    "RelativePath": "api/DashBoard/stats",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.DestinyController",
+    "Method": "GetDestinyById",
+    "RelativePath": "api/Destiny/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.DestinyController",
+    "Method": "GetAllDestinies",
+    "RelativePath": "api/Destiny/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.DestinyController",
+    "Method": "UpdateDestiny",
+    "RelativePath": "api/Destiny/update{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "destiny",
+        "Type": "HoshiVibe.Entities.DTO.ModelRequests.User.DestinyUpdateDTO",
         "IsRequired": true
       }
     ],
@@ -238,6 +396,58 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HoshiVibe.Controllers.PaymentsController",
+    "Method": "CheckOrderStatus",
+    "RelativePath": "api/Payments/check-order-status/{orderId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.PaymentsController",
+    "Method": "Create",
+    "RelativePath": "api/Payments/vnpay-create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "HoshiVibe.Controllers.PaymentsController\u002BCreateVnpayReq",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.PaymentsController",
+    "Method": "Ipn",
+    "RelativePath": "api/Payments/vnpay-ipn",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.PaymentsController",
+    "Method": "Return",
+    "RelativePath": "api/Payments/vnpay-return",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HoshiVibe.Controllers.ProductController",
     "Method": "GetProductById",
     "RelativePath": "api/Product/{productId}",
@@ -287,6 +497,22 @@
   },
   {
     "ContainingType": "HoshiVibe.Controllers.ProductController",
+    "Method": "GetProposedProducts",
+    "RelativePath": "api/Product/proposed-product",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "destiny",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.ProductController",
     "Method": "SearchProducts",
     "RelativePath": "api/Product/search",
     "HttpMethod": "GET",
@@ -323,19 +549,57 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "HoshiVibe.Controllers.UserProfileController",
-    "Method": "GetAllUserInformations",
-    "RelativePath": "api/UserProfile/get-all-user-informations",
-    "HttpMethod": "GET",
+    "ContainingType": "HoshiVibe.Controllers.ShoppingCartController",
+    "Method": "AddToCart",
+    "RelativePath": "api/ShoppingCart/add-to-cart",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "requestDTO",
+        "Type": "HoshiVibe.Entities.DTO.ModelRequests.OderProcess.CartItemsRequestDTO",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "HoshiVibe.Controllers.UserProfileController",
-    "Method": "GetUserProfile",
-    "RelativePath": "api/UserProfile/get-user-profile/{userId}",
+    "ContainingType": "HoshiVibe.Controllers.ShoppingCartController",
+    "Method": "Create",
+    "RelativePath": "api/ShoppingCart/create-shopping-cart",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cartDto",
+        "Type": "HoshiVibe.Entities.DTO.ModelRequests.OderProcess.CartRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.ShoppingCartController",
+    "Method": "Delete",
+    "RelativePath": "api/ShoppingCart/delete-shopping-cart-item{cartItemId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cartItemId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.ShoppingCartController",
+    "Method": "GetUserCart",
+    "RelativePath": "api/ShoppingCart/getUserCart{userId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -349,10 +613,47 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "HoshiVibe.Controllers.UserProfileController",
-    "Method": "UpdateProfile",
-    "RelativePath": "api/UserProfile/update-profile/{userId}/{profileId}",
+    "ContainingType": "HoshiVibe.Controllers.ShoppingCartController",
+    "Method": "Update",
+    "RelativePath": "api/ShoppingCart/update-shopping-cart-item{cartItemId}",
     "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cartItemId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "requestDTO",
+        "Type": "HoshiVibe.Entities.DTO.ModelRequests.OderProcess.CartItemsRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.UserAndProfileController",
+    "Method": "CreateAdminAccount",
+    "RelativePath": "api/UserAndProfile/create-admin-account",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "HoshiVibe.Entities.DTO.ModelRequests.User.RegisterDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.UserAndProfileController",
+    "Method": "DeleteUser",
+    "RelativePath": "api/UserAndProfile/delete-user/{userId}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -360,7 +661,44 @@
         "Name": "userId",
         "Type": "System.Guid",
         "IsRequired": true
-      },
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.UserAndProfileController",
+    "Method": "GetAllUserInformations",
+    "RelativePath": "api/UserAndProfile/get-all-user-informations",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.UserAndProfileController",
+    "Method": "GetUserProfile",
+    "RelativePath": "api/UserAndProfile/get-user-profile/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.UserAndProfileController",
+    "Method": "UpdateProfile",
+    "RelativePath": "api/UserAndProfile/update-profile/{profileId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
         "Name": "profileId",
         "Type": "System.Guid",
@@ -375,9 +713,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "HoshiVibe.Controllers.UserProfileController",
+    "ContainingType": "HoshiVibe.Controllers.UserAndProfileController",
     "Method": "UpdateUser",
-    "RelativePath": "api/UserProfile/update-user/{id}",
+    "RelativePath": "api/UserAndProfile/update-user/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -390,6 +728,53 @@
       {
         "Name": "dto",
         "Type": "HoshiVibe.Entities.DTO.ModelRequests.User.UpdateUserDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.ZodiacController",
+    "Method": "GetZodiacById",
+    "RelativePath": "api/Zodiac/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.ZodiacController",
+    "Method": "GetAllZodiacs",
+    "RelativePath": "api/Zodiac/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoshiVibe.Controllers.ZodiacController",
+    "Method": "UpdateZodiac",
+    "RelativePath": "api/Zodiac/update{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "zodiac",
+        "Type": "HoshiVibe.Entities.DTO.ModelRequests.User.ZodiacUpdateDTO",
         "IsRequired": true
       }
     ],

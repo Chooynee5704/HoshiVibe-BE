@@ -1,11 +1,13 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HoshiVibe.Entities.DTO.ModelRequests.OderProcess;
 using HoshiVibe.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HoshiVibe.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class OrderDetailController : Controller
     {
@@ -17,6 +19,7 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpGet("order/{orderId}")]
+        [Authorize(Roles = "Admin,Customer")]
         public IActionResult GetOrderDetailsByOrderId(string orderId)
         {
             var orderDetails = _service.GetOrderDetailsByOrderId(orderId);
@@ -27,18 +30,36 @@ namespace HoshiVibe.Controllers
             return Ok(orderDetails);
         }
         [HttpPost("create")]
+        [AllowAnonymous]
         public IActionResult Create([FromBody] OrderDetailRequestDTO request)
         {
             if (request == null || !ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_service.CreateOrderDetail(request))
-                return Conflict("An error occurred while creating the order detail.");
-
-            return Ok("Order detail created successfully.");
+            try
+            {
+                var result = _service.CreateOrderDetail(request);
+                if (!result)
+                    return StatusCode(500, new { message = "Không thể tạo OrderDetail." });
+                var createdOrderDetail = _service.GetOrderDetailsByOrderId(request.OrderId);
+                return Ok(new 
+                {
+                    createdOrderDetail,
+                    message = "Tạo thành công."
+                }
+                );
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message 
+                });
+            }
         }
 
         [HttpPut("update/{id}")]
+        [AllowAnonymous]
         public IActionResult Update(Guid id, [FromBody] OrderDetailRequestDTO request)
         {
             if (request == null || !ModelState.IsValid)
@@ -51,6 +72,7 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [AllowAnonymous]
         public IActionResult Delete(Guid id)
         {
             if (!_service.DeleteOrderDetail(id))

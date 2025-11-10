@@ -129,6 +129,228 @@
         }
       }
     },
+    "/api/DashBoard/stats": {
+      "get": {
+        "tags": [
+          "DashBoard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DashBoard/get-summary-order{productId}": {
+      "get": {
+        "tags": [
+          "DashBoard"
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DashBoard/most-added-products": {
+      "get": {
+        "tags": [
+          "DashBoard"
+        ],
+        "parameters": [
+          {
+            "name": "topN",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DashBoard/orders-by-month": {
+      "get": {
+        "tags": [
+          "DashBoard"
+        ],
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DashBoard/monthly-order-stats": {
+      "get": {
+        "tags": [
+          "DashBoard"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/DashBoard/get-top-selling-product{top}": {
+      "get": {
+        "tags": [
+          "DashBoard"
+        ],
+        "parameters": [
+          {
+            "name": "top",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Destiny/all": {
+      "get": {
+        "tags": [
+          "Destiny"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Destiny/{id}": {
+      "get": {
+        "tags": [
+          "Destiny"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Destiny/update{id}": {
+      "put": {
+        "tags": [
+          "Destiny"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DestinyUpdateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DestinyUpdateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DestinyUpdateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "HoshiVibe"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Order/all": {
       "get": {
         "tags": [
@@ -410,6 +632,83 @@
         }
       }
     },
+    "/api/Payments/vnpay-create": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVnpayReq"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVnpayReq"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVnpayReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Payments/vnpay-return": {
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Payments/check-order-status/{orderId}": {
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Payments/vnpay-ipn": {
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Product/search": {
       "get": {
         "tags": [
@@ -418,6 +717,27 @@
         "parameters": [
           {
             "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Product/proposed-product": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "parameters": [
+          {
+            "name": "destiny",
             "in": "query",
             "schema": {
               "type": "string"
@@ -550,10 +870,10 @@
         }
       }
     },
-    "/api/UserProfile/get-user-profile/{userId}": {
+    "/api/ShoppingCart/getUserCart{userId}": {
       "get": {
         "tags": [
-          "UserProfile"
+          "ShoppingCart"
         ],
         "parameters": [
           {
@@ -573,11 +893,30 @@
         }
       }
     },
-    "/api/UserProfile/get-all-user-informations": {
-      "get": {
+    "/api/ShoppingCart/create-shopping-cart": {
+      "post": {
         "tags": [
-          "UserProfile"
+          "ShoppingCart"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartRequestDTO"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -585,10 +924,106 @@
         }
       }
     },
-    "/api/UserProfile/update-profile/{userId}/{profileId}": {
+    "/api/ShoppingCart/add-to-cart": {
+      "post": {
+        "tags": [
+          "ShoppingCart"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartItemsRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartItemsRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartItemsRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ShoppingCart/update-shopping-cart-item{cartItemId}": {
       "put": {
         "tags": [
-          "UserProfile"
+          "ShoppingCart"
+        ],
+        "parameters": [
+          {
+            "name": "cartItemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartItemsRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartItemsRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartItemsRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ShoppingCart/delete-shopping-cart-item{cartItemId}": {
+      "delete": {
+        "tags": [
+          "ShoppingCart"
+        ],
+        "parameters": [
+          {
+            "name": "cartItemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserAndProfile/get-user-profile/{userId}": {
+      "get": {
+        "tags": [
+          "UserAndProfile"
         ],
         "parameters": [
           {
@@ -599,7 +1034,33 @@
               "type": "string",
               "format": "uuid"
             }
-          },
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserAndProfile/get-all-user-informations": {
+      "get": {
+        "tags": [
+          "UserAndProfile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserAndProfile/update-profile/{profileId}": {
+      "put": {
+        "tags": [
+          "UserAndProfile"
+        ],
+        "parameters": [
           {
             "name": "profileId",
             "in": "path",
@@ -636,10 +1097,10 @@
         }
       }
     },
-    "/api/UserProfile/update-user/{id}": {
+    "/api/UserAndProfile/update-user/{id}": {
       "put": {
         "tags": [
-          "UserProfile"
+          "UserAndProfile"
         ],
         "parameters": [
           {
@@ -677,19 +1138,224 @@
           }
         }
       }
+    },
+    "/api/UserAndProfile/create-admin-account": {
+      "post": {
+        "tags": [
+          "UserAndProfile"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/UserAndProfile/delete-user/{userId}": {
+      "delete": {
+        "tags": [
+          "UserAndProfile"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Zodiac/all": {
+      "get": {
+        "tags": [
+          "Zodiac"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Zodiac/{id}": {
+      "get": {
+        "tags": [
+          "Zodiac"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Zodiac/update{id}": {
+      "put": {
+        "tags": [
+          "Zodiac"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZodiacUpdateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZodiacUpdateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZodiacUpdateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "CartItemsRequestDTO": {
+        "type": "object",
+        "properties": {
+          "cart_Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "product_Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unitPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CartRequestDTO": {
+        "type": "object",
+        "properties": {
+          "user_Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateVnpayReq": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "nullable": true
+          },
+          "bankCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DestinyUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ForgotPassConfirm": {
         "required": [
-          "identifier",
+          "account",
+          "email",
           "newPassword",
           "verificationCode"
         ],
         "type": "object",
         "properties": {
-          "identifier": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "account": {
             "type": "string",
             "nullable": true
           },
@@ -706,10 +1372,15 @@
       },
       "ForgotPassRq": {
         "required": [
+          "account",
           "email"
         ],
         "type": "object",
         "properties": {
+          "account": {
+            "type": "string",
+            "nullable": true
+          },
           "email": {
             "type": "string",
             "nullable": true
@@ -743,7 +1414,13 @@
           },
           "productId": {
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "nullable": true
+          },
+          "cProduct_Id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           },
           "quantity": {
             "type": "integer",
@@ -770,6 +1447,8 @@
           "discountAmount",
           "finalPrice",
           "orderDate",
+          "phoneNumber",
+          "shippingAddress",
           "totalPrice"
         ],
         "type": "object",
@@ -795,19 +1474,20 @@
             "type": "number",
             "format": "double"
           },
+          "shippingAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
           "orderDate": {
             "type": "string",
             "format": "date-time"
           },
           "status": {
             "type": "string",
-            "nullable": true
-          },
-          "orderDetails": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderDetailRequestDTO"
-            },
             "nullable": true
           }
         },
@@ -844,6 +1524,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "destiny": {
+            "type": "string",
+            "nullable": true
+          },
           "status": {
             "type": "string",
             "nullable": true
@@ -856,19 +1540,8 @@
         "additionalProperties": false
       },
       "ProfileUpdateDTO": {
-        "required": [
-          "user_Id"
-        ],
         "type": "object",
         "properties": {
-          "userProfile_Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "user_Id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "avatarUrl": {
             "type": "string",
             "nullable": true
@@ -885,23 +1558,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "address": {
-            "type": "string",
-            "nullable": true
-          },
           "yob": {
             "type": "string",
             "format": "date-time"
           },
           "yobDestination": {
-            "type": "string",
-            "nullable": true
-          },
-          "zodiac": {
-            "type": "string",
-            "nullable": true
-          },
-          "zodiacUrl": {
             "type": "string",
             "nullable": true
           }
@@ -944,15 +1605,10 @@
       "UpdateUserDTO": {
         "required": [
           "email",
-          "password",
-          "user_Id"
+          "password"
         ],
         "type": "object",
         "properties": {
-          "user_Id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "password": {
             "minLength": 1,
             "type": "string"
@@ -963,7 +1619,34 @@
           }
         },
         "additionalProperties": false
+      },
+      "ZodiacUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
+        "name": "Authorization",
+        "in": "header"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
 }

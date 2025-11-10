@@ -42,7 +42,7 @@ namespace HoshiVibe.Migrations
                     b.HasIndex("User_Id")
                         .IsUnique();
 
-                    b.ToTable("ShoppingCarts");
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.CartItem", b =>
@@ -70,7 +70,7 @@ namespace HoshiVibe.Migrations
 
                     b.HasIndex("Product_Id");
 
-                    b.ToTable("ShoppingCartItems");
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.CustomProduct", b =>
@@ -88,21 +88,44 @@ namespace HoshiVibe.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("OrderDetailsOrderDetail_Id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("CProduct_Id");
 
+                    b.HasIndex("OrderDetailsOrderDetail_Id");
+
                     b.ToTable("CustomProduct");
+                });
+
+            modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Destiny", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Destinies");
                 });
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Order", b =>
                 {
                     b.Property<string>("Order_Id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("CProduct_Id")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("Cart_Id")
                         .HasColumnType("uniqueidentifier");
@@ -123,6 +146,13 @@ namespace HoshiVibe.Migrations
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("PhoneNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -156,7 +186,7 @@ namespace HoshiVibe.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CustomProductCProduct_Id")
+                    b.Property<Guid?>("CProduct_Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Discount")
@@ -167,7 +197,7 @@ namespace HoshiVibe.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("Product_Id")
@@ -181,8 +211,6 @@ namespace HoshiVibe.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderDetail_Id");
-
-                    b.HasIndex("CustomProductCProduct_Id");
 
                     b.HasIndex("OrderId");
 
@@ -266,6 +294,9 @@ namespace HoshiVibe.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Destiny")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -327,15 +358,14 @@ namespace HoshiVibe.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DestinyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -354,17 +384,17 @@ namespace HoshiVibe.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Zodiac")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ZodiacUrl")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ZodiacId")
+                        .HasColumnType("int");
 
                     b.HasKey("UserProfile_Id");
 
+                    b.HasIndex("DestinyId");
+
                     b.HasIndex("User_Id")
                         .IsUnique();
+
+                    b.HasIndex("ZodiacId");
 
                     b.ToTable("UserProfiles");
                 });
@@ -397,6 +427,31 @@ namespace HoshiVibe.Migrations
                     b.ToTable("Vouchers");
                 });
 
+            modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Zodiac", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Zodiacs");
+                });
+
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Cart", b =>
                 {
                     b.HasOne("HoshiVibe.Entities.Models.Base.User", "User")
@@ -425,6 +480,15 @@ namespace HoshiVibe.Migrations
                     b.Navigation("Cart");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("HoshiVibe.Entities.Models.Base.CustomProduct", b =>
+                {
+                    b.HasOne("HoshiVibe.Entities.Models.Base.OrderDetail", "OrderDetails")
+                        .WithMany()
+                        .HasForeignKey("OrderDetailsOrderDetail_Id");
+
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Order", b =>
@@ -459,10 +523,6 @@ namespace HoshiVibe.Migrations
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.OrderDetail", b =>
                 {
-                    b.HasOne("HoshiVibe.Entities.Models.Base.CustomProduct", null)
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("CustomProductCProduct_Id");
-
                     b.HasOne("HoshiVibe.Entities.Models.Base.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
@@ -472,8 +532,7 @@ namespace HoshiVibe.Migrations
                     b.HasOne("HoshiVibe.Entities.Models.Base.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HoshiVibe.Entities.Models.Base.Product", null)
                         .WithMany("OrderDetails")
@@ -508,13 +567,27 @@ namespace HoshiVibe.Migrations
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.UserProfile", b =>
                 {
+                    b.HasOne("HoshiVibe.Entities.Models.Base.Destiny", "Destiny")
+                        .WithMany("UserProfiles")
+                        .HasForeignKey("DestinyId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("HoshiVibe.Entities.Models.Base.User", "User")
                         .WithOne("Profile")
                         .HasForeignKey("HoshiVibe.Entities.Models.Base.UserProfile", "User_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HoshiVibe.Entities.Models.Base.Zodiac", "Zodiac")
+                        .WithMany("UserProfiles")
+                        .HasForeignKey("ZodiacId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Destiny");
+
                     b.Navigation("User");
+
+                    b.Navigation("Zodiac");
                 });
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Cart", b =>
@@ -522,9 +595,9 @@ namespace HoshiVibe.Migrations
                     b.Navigation("CartItems");
                 });
 
-            modelBuilder.Entity("HoshiVibe.Entities.Models.Base.CustomProduct", b =>
+            modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Destiny", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("UserProfiles");
                 });
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Order", b =>
@@ -556,6 +629,11 @@ namespace HoshiVibe.Migrations
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Voucher", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Zodiac", b =>
+                {
+                    b.Navigation("UserProfiles");
                 });
 #pragma warning restore 612, 618
         }

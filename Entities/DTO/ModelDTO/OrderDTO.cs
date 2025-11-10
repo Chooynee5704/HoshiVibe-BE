@@ -1,4 +1,4 @@
-﻿using HoshiVibe.Entities.Models.Base;
+using HoshiVibe.Entities.Models.Base;
 using HoshiVibe.Entity.Model;
 
 namespace HoshiVibe.Entity.DTO.ModelDTO
@@ -13,6 +13,9 @@ namespace HoshiVibe.Entity.DTO.ModelDTO
 
         public required decimal DiscountAmount { get; set; }
         public required decimal FinalPrice  { get; set; }
+        public required string ShippingAddress { get; set; }
+
+        public required int PhoneNumber { get; set; }
         public required DateTime OrderDate { get; set; }
         public string? Status { get; set; } = "Pending";
 

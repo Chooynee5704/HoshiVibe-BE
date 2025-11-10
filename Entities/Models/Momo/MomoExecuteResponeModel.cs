@@ -1,4 +1,4 @@
-﻿namespace HoshiVibe.Entities.Models.Momo
+namespace HoshiVibe.Entities.Models.Momo
 {
     public class MomoExecuteResponeModel
     {

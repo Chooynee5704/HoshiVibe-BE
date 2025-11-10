@@ -1,4 +1,4 @@
-﻿using HoshiVibe.DB;
+using HoshiVibe.DB;
 using HoshiVibe.Entities.Models.Base;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +17,7 @@ namespace HoshiVibe.Repository
             return _context.Orders.Any(u => u.Order_Id == id);
         }
 
+        public void AddPayment(Payment p) => _context.Payments.Add(p);
         public ICollection<Order> GetAllOrders()
         {
             return _context.Orders
@@ -62,9 +63,32 @@ namespace HoshiVibe.Repository
             return Save();
         }
 
+        public int GetTotalOrdersByMonth(int month, int year)
+        {
+            return _context.Orders
+                .Where(o => o.OrderDate.Month == month && o.OrderDate.Year == year)
+                .Count();
+        }
+
+        // 🆕 Lấy thống kê tổng đơn hàng theo tất cả các tháng trong năm (dạng biểu đồ)
+        public IEnumerable<object> GetMonthlyOrderStatistics(int year)
+        {
+            return _context.Orders
+                .Where(o => o.OrderDate.Year == year)
+                .GroupBy(o => o.OrderDate.Month)
+                .Select(g => new
+                {
+                    Month = g.Key,
+                    TotalOrders = g.Count(),
+                    TotalRevenue = g.Sum(o => o.FinalPrice)
+                })
+                .OrderBy(x => x.Month)
+                .ToList();
+        }
         public bool Save()
         {
             return _context.SaveChanges() > 0;
         }
+
     }
 }

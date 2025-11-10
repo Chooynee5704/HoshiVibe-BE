@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HoshiVibe.Entities.DTO.ModelRequests.OderProcess;
 using HoshiVibe.Entities.Models.Base;
 using HoshiVibe.Entity.DTO.ModelDTO;
@@ -11,14 +11,23 @@ namespace HoshiVibe.Service
     public class OrderDetaillsService
     {
         private readonly OrderDetailsRepository _orderDetailsRepository;  
+        private readonly ProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        public OrderDetaillsService(OrderDetailsRepository orderDetaillsRepository, IMapper mapper)
+        public OrderDetaillsService(OrderDetailsRepository orderDetaillsRepository, ProductRepository productRepository , IMapper mapper)
         {
             _orderDetailsRepository = orderDetaillsRepository;
+            _productRepository = productRepository;
             _mapper = mapper;
         }
 
+        public OrderDetailDTO? GetOrderDetailById(Guid id)
+        {
+            var orderDetail = _orderDetailsRepository.GetOrderDetailById(id);
+            if (orderDetail == null)
+                return null;
+            return _mapper.Map<OrderDetailDTO>(orderDetail);
+        }
         public ICollection<OrderDetailDTO>? GetOrderDetailsByOrderId(string orderId)
         {
             var orderDetails = _orderDetailsRepository.GetOrderDetailsByOrderId(orderId);
@@ -30,6 +39,24 @@ namespace HoshiVibe.Service
         public bool CreateOrderDetail(OrderDetailRequestDTO request)
         {
             var orderDetail = _mapper.Map<OrderDetail>(request);
+
+            var product = _productRepository.GetProductById( request.ProductId );
+
+            if (product == null) throw new Exception($"Không tìm thấy sản phẩm với ID: {orderDetail.ProductId}");
+            ;
+            if (product.Stock < request.Quantity) throw new Exception($"Sản phẩm '{product.Name}' không đủ hàng trong kho. (Còn lại: {product.Stock})");
+            ;
+
+            product.Stock -= orderDetail.Quantity;
+
+            var updatedProduct = _productRepository.UpdateProduct(product);
+
+            if (!updatedProduct)
+            {
+                throw new Exception($"Không thể cập nhật tồn kho cho sản phẩm: {product.Name}");
+            }
+
+
             return _orderDetailsRepository.CreateOrderDetail(orderDetail);
         }
 

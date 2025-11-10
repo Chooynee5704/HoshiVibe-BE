@@ -1,4 +1,4 @@
-﻿using HoshiVibe.DB;
+using HoshiVibe.DB;
 using HoshiVibe.Entities.Models.Base;
 
 namespace HoshiVibe.Repositories
@@ -45,6 +45,12 @@ namespace HoshiVibe.Repositories
             return _context.Users.FirstOrDefault(u => u.Account == account);
         }
 
+        public ICollection<User> GetAllUsers( string role)
+        {
+            return _context.Users
+                .Where(u => u.Role == role)
+                .ToList();
+        }
         public ICollection<User> GetInactiveUsers()
         {
             return _context.Users
@@ -61,6 +67,10 @@ namespace HoshiVibe.Repositories
         public bool AccountExists(string account)
         {
             return _context.Users.Any(u => u.Account == account);
+        }
+        public bool EmailExists(string email)
+        {
+            return _context.Users.Any(u => u.Email == email);
         }
         public bool UpdateUser(User user)
         {

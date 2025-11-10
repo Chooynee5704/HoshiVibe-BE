@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HoshiVibe.Entities.DTO.ModelRequests.OderProcess;
 using HoshiVibe.Entities.Models.Base;
 using HoshiVibe.Entity.DTO.ModelDTO;
@@ -14,6 +14,38 @@ namespace HoshiVibe.Service
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
+        }
+        public bool MarkPaid(string orderId, long expectedAmountVnd, string method = "VNPAY")
+        {
+            var order = _orderRepository.GetOrderById(orderId);
+            if (order == null) return false;
+
+            // Nếu không khớp tiền thì từ chối
+            long finalPriceRounded = (long)Math.Round(order.FinalPrice, 0);
+            if (finalPriceRounded != expectedAmountVnd) return false;
+
+            // Idempotent: nếu đã Paid thì coi như thành công
+            if (string.Equals(order.Status, "Paid", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            // Nếu đang Pending mới chuyển sang Paid (tuỳ chính sách, bạn có thể cho từ Failed->Paid nếu IPN đến sau)
+            if (!string.Equals(order.Status, "Pending", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            // Cập nhật trạng thái
+            order.Status = "Paid";
+
+            // Ghi log thanh toán (nếu repo hỗ trợ add payment)
+            _orderRepository.AddPayment(new Payment
+            {
+                Order_Id = order.Order_Id,
+                Amount = expectedAmountVnd,
+                PaymentDate = DateTime.UtcNow,
+                Status = "Success",
+                PaymentMethod = method
+            });
+
+            return _orderRepository.Save(); // SaveChanges trả bool
         }
         public ICollection<OrderDTO> GetAllOrders()
         {

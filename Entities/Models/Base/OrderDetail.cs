@@ -1,11 +1,14 @@
-﻿namespace HoshiVibe.Entities.Models.Base
+namespace HoshiVibe.Entities.Models.Base
 {
     public class OrderDetail
     {
+        // Properties
         public Guid OrderDetail_Id { get; set; }
         public required string OrderId { get; set; }
         
-        public Guid ProductId { get; set; }
+        public Guid? ProductId { get; set; }
+
+        public Guid? CProduct_Id { get; set; }
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }

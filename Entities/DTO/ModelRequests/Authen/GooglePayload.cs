@@ -1,10 +1,10 @@
-﻿namespace HoshiVibe.Entity.DTO.ModelRequests.Authen
+namespace HoshiVibe.Entity.DTO.ModelRequests.Authen
 {
     public class GooglePayload
     {
-        public string Email { get; set; }
-        public string Name { get; set; }
+        public required string Email { get; set; }
+        public string? Name { get; set; }
 
-        public string Aud { get; set; } // Add this
+        public string? Aud { get; set; } // Add this
     }
 }
