@@ -21,6 +21,7 @@ namespace HoshiVibe.DB
         public DbSet<PaymentTransactions> PaymentTransactions { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<CustomProduct> CustomProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,6 +71,22 @@ namespace HoshiVibe.DB
                 .WithOne(o => o.User)
                 .HasForeignKey(o => o.User_Id)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<CustomProduct>(e =>
+            {
+                e.ToTable("CustomProduct");           
+                e.Property(p => p.Price).HasPrecision(18, 2);
+                e.HasOne(p => p.User)
+                   .WithMany()
+                  .HasForeignKey(p => p.User_Id)
+                  .HasPrincipalKey(u => u.User_Id)
+                  .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            modelBuilder.Entity<CustomProduct>(entity =>
+            {
+                entity.Property(p => p.Price).HasPrecision(18, 2);
+            });
+
 
             // ORDER - ORDER DETAIL (1-n)
             modelBuilder.Entity<Order>()
@@ -127,6 +144,13 @@ namespace HoshiVibe.DB
                 .HasForeignKey(ci => ci.Product_Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Order>(e =>
+            {
+                e.HasOne(o => o.Cart)
+                 .WithMany()
+                 .HasForeignKey(o => o.Cart_Id)
+                 .HasPrincipalKey(c => c.Cart_Id);
+            });
 
             // Handle decimal precision for monetary values
             modelBuilder.Entity<Order>(entity =>

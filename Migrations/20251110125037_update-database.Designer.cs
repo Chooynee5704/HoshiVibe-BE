@@ -4,6 +4,7 @@ using HoshiVibe.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HoshiVibe.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251110125037_update-database")]
+    partial class updatedatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,19 +95,13 @@ namespace HoshiVibe.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid?>("User_Id")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CProduct_Id");
 
                     b.HasIndex("OrderDetailsOrderDetail_Id");
 
-                    b.HasIndex("User_Id");
-
-                    b.ToTable("CustomProduct", (string)null);
+                    b.ToTable("CustomProduct");
                 });
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Destiny", b =>
@@ -134,6 +131,9 @@ namespace HoshiVibe.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid?>("Cart_Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Cart_Id1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CustomProductCProduct_Id")
@@ -172,7 +172,7 @@ namespace HoshiVibe.Migrations
 
                     b.HasKey("Order_Id");
 
-                    b.HasIndex("Cart_Id");
+                    b.HasIndex("Cart_Id1");
 
                     b.HasIndex("CustomProductCProduct_Id");
 
@@ -491,21 +491,14 @@ namespace HoshiVibe.Migrations
                         .WithMany()
                         .HasForeignKey("OrderDetailsOrderDetail_Id");
 
-                    b.HasOne("HoshiVibe.Entities.Models.Base.User", "User")
-                        .WithMany()
-                        .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("OrderDetails");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.Order", b =>
                 {
                     b.HasOne("HoshiVibe.Entities.Models.Base.Cart", "Cart")
                         .WithMany()
-                        .HasForeignKey("Cart_Id");
+                        .HasForeignKey("Cart_Id1");
 
                     b.HasOne("HoshiVibe.Entities.Models.Base.CustomProduct", "CustomProduct")
                         .WithMany()
