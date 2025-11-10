@@ -97,6 +97,14 @@ namespace HoshiVibe.Mapper
             CreateMap<CartItem, CartItemDTO>()
                 .ForMember(d => d.CartItem_Id, o => o.MapFrom(s => s.CartItem_Id))
                 .ReverseMap();
+
+            // ===== CustomProduct =====
+            CreateMap<CustomProduct, HoshiVibe.Entities.DTO.ModelRequests.Product.CustomPdRqDTO>()
+                .ReverseMap()
+                .ForMember(d => d.CProduct_Id, o => o.Ignore());
+
+            CreateMap<CustomProduct, HoshiVibe.Entities.DTO.ModelRequests.Product.CustomProductDTO>()
+                .ReverseMap();
         }
     }
 }
