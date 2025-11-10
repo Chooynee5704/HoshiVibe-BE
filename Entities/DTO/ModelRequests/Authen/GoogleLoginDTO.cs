@@ -1,4 +1,4 @@
-﻿namespace HoshiVibe.Entity.DTO.ModelRequests.Authen
+namespace HoshiVibe.Entity.DTO.ModelRequests.Authen
 {
     public class GoogleLoginDTO
     {

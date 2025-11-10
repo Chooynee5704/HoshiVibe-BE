@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("ae17116e-307a-4c8d-bd1f-ec015ee6482a")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("HoshiVibe")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cea45aff9ceff87d7f40bba4e3ddde38b7282e1d")]
 [assembly: System.Reflection.AssemblyProductAttribute("HoshiVibe")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HoshiVibe")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

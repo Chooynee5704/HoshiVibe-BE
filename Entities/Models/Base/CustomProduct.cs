@@ -1,4 +1,4 @@
-﻿namespace HoshiVibe.Entities.Models.Base
+namespace HoshiVibe.Entities.Models.Base
 {
     public class CustomProduct
     {
@@ -8,6 +8,6 @@
         public required decimal Price { get; set; }
         public string? ImageUrl { get; set; }
         // Navigation
-        public ICollection<OrderDetail>? OrderDetails { get; set; }
+        public OrderDetail? OrderDetails { get; set; }
     }
 }

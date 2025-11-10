@@ -1,8 +1,9 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HoshiVibe.Entities.DTO.ModelRequests;
 using HoshiVibe.Entities.DTO.ModelRequests.User;
 using HoshiVibe.Entities.Models.Base;
 using HoshiVibe.Repositories;
+using HoshiVibe.Repository;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
 using System.Net.Mail;
@@ -13,17 +14,26 @@ namespace HoshiVibe.Service
     {
         private readonly UserRepository _userRepo;
         private readonly UserProfileRepository _userProfileRepo;
+        private readonly CartRepository _cartRepo;
         private readonly IMapper _mapper;
         private readonly PasswordHasher<User> _passwordHasher;
         private readonly string _fromEmail = "hoshivibe8386@gmail.com";
         private readonly string _appPassword = "ewtxsjvfazadkeuv";
 
-        public UserService(UserRepository userRepo, UserProfileRepository userProfileRepo, IMapper mapper, PasswordHasher<User> passwordHasher)
+        public UserService(UserRepository userRepo, 
+            UserProfileRepository userProfileRepo, 
+            CartRepository cartRepo, IMapper mapper, 
+            PasswordHasher<User> passwordHasher, 
+            IConfiguration configuration)
         {
             _userRepo = userRepo;
             _userProfileRepo = userProfileRepo;
+            _cartRepo = cartRepo;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
+            //_fromEmail = configuration["EmailSettings:FromEmail"];
+            //_appPassword = configuration["EmailSettings:AppPassword"];
+
         }
 
         public User? Login(string identifier, string password)
@@ -39,18 +49,21 @@ namespace HoshiVibe.Service
 
             return user;
         }
-        public bool Register(RegisterDTO dto, out User? user, out UserProfile? userProfile)
+        public bool Register(RegisterDTO dto, out User? user, out UserProfile? userProfile,out Cart? userCart, string role)
         {
             user = null;
             userProfile = null;
+            userCart = null;
 
             if (_userRepo.AccountExists(dto.Account))
                 return false;
 
+            if (_userRepo.EmailExists(dto.Email))
+                return false;
 
             user = _mapper.Map<User>(dto);
             user.User_Id = Guid.NewGuid();
-            user.Role = "Customer";
+            user.Role = role;
             user.IsDisabled = false;
 
 
@@ -65,23 +78,38 @@ namespace HoshiVibe.Service
                 FullName = string.Empty,
                 Point = 0,
                 Age = 0,
-                Address = string.Empty,
                 Yob = DateTime.MinValue,  // default
-                YobDestination = string.Empty,
-                Zodiac = string.Empty,
-                ZodiacUrl = string.Empty
+                YobDestination = string.Empty
             };
 
-            return _userRepo.CreateUser(user) && _userProfileRepo.CreateUserProfile(userProfile);
+            userCart = new Cart
+            {
+                Cart_Id = Guid.NewGuid(),
+                User_Id = user.User_Id,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            return _userRepo.CreateUser(user) && _userProfileRepo.CreateUserProfile(userProfile) && _cartRepo.AddToCart(userCart);
+        }
+        public bool DeleteUser(Guid userId)
+        {
+            var user = _userRepo.GetUserById(userId);
+            if (user == null) return false;
+            return _userRepo.DeleteUser(user);
         }
 
-
-        public bool PasswordReset(string email, out string? verificationCode)
+        public bool PasswordReset(string account,string email, out string? verificationCode)
         {
             verificationCode = null;
 
             var user = _userRepo.GetUserByEmail(email);
             if (user == null) return false;
+
+            // Verify Account
+            if (!string.Equals(user.Account, account, StringComparison.OrdinalIgnoreCase))
+                return false;
+
 
             // Create Verifcation Code
             verificationCode = new Random().Next(100000, 999999).ToString();
@@ -93,10 +121,13 @@ namespace HoshiVibe.Service
         }
 
 
-        public bool ConfirmPasswordReset(string identifier, string verificationCode, string newPassword)
+        public bool ConfirmPasswordReset(string email,string account , string verificationCode, string newPassword)
         {
-            var user = _userRepo.GetUserByAccount(identifier) ?? _userRepo.GetUserByEmail(identifier);
+            var user =  _userRepo.GetUserByEmail(email);
+
             if (user == null) return false;
+
+            if (account != user.Account) return false;
 
             if (user.resetToken != verificationCode)
                 return false;

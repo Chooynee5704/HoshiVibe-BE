@@ -1,4 +1,4 @@
-﻿using HoshiVibe.Entity.Model;
+using HoshiVibe.Entity.Model;
 
 namespace HoshiVibe.Entity.DTO.ModelDTO
 {

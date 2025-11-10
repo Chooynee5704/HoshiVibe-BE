@@ -1,4 +1,4 @@
-﻿namespace HoshiVibe.Entities.Models.Base
+namespace HoshiVibe.Entities.Models.Base
 {
     public class UserProfile
     {
@@ -10,14 +10,17 @@
         public int Point { get; set; } = 0;
 
         public  int Age { get; set; } 
-        public string Address { get; set; } = string.Empty;
 
         public DateTime Yob { get; set; }
         public string YobDestination { get; set; } = string.Empty;
-        public string Zodiac { get; set; } = string.Empty;
 
-        public string? ZodiacUrl { get; set; }
 
+        public int? ZodiacId { get; set; }
+        public Zodiac? Zodiac { get; set; }
+
+        public int? DestinyId { get; set; }
+
+        public Destiny? Destiny { get; set; }
         // Navigation
         public User? User { get; set; }
     }

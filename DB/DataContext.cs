@@ -1,4 +1,4 @@
-﻿using HoshiVibe.Entities.Models.Base;
+using HoshiVibe.Entities.Models.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -11,14 +11,16 @@ namespace HoshiVibe.DB
         // DbSet
         public DbSet<User> Users { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Zodiac> Zodiacs { get; set; }
+        public DbSet<Destiny> Destinies { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentTransactions> PaymentTransactions { get; set; }
-        public DbSet<Cart> ShoppingCarts { get; set; }
-        public DbSet<CartItem> ShoppingCartItems { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +29,8 @@ namespace HoshiVibe.DB
             // ================== PRIMARY KEYS ==================
             modelBuilder.Entity<User>().HasKey(u => u.User_Id);
             modelBuilder.Entity<UserProfile>().HasKey(up => up.UserProfile_Id);
+            modelBuilder.Entity<Zodiac>().HasKey(z => z.Id);
+            modelBuilder.Entity<Destiny>().HasKey(d => d.Id);
             modelBuilder.Entity<Product>().HasKey(p => p.Product_Id);
             modelBuilder.Entity<Voucher>().HasKey(v => v.Voucher_Id);
             modelBuilder.Entity<Order>().HasKey(o => o.Order_Id);
@@ -45,6 +49,20 @@ namespace HoshiVibe.DB
                 .WithOne(up => up.User)
                 .HasForeignKey<UserProfile>(up => up.User_Id)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // 1:N Destiny - UserProfile
+            modelBuilder.Entity<UserProfile>()
+                .HasOne(up => up.Destiny)
+                .WithMany(d => d.UserProfiles)
+                .HasForeignKey(up => up.DestinyId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // 1:N Zodiac - UserProfile
+            modelBuilder.Entity<UserProfile>()
+                .HasOne(up => up.Zodiac)
+                .WithMany(z => z.UserProfiles)
+                .HasForeignKey(up => up.ZodiacId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             // USER - ORDER (1-n)
             modelBuilder.Entity<User>()

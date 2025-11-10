@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Google.Apis.Auth;
 using HoshiVibe.Entities.DTO.ModelRequests.User;
 using HoshiVibe.Entity.DTO.ModelRequests.Authen;
@@ -17,9 +17,11 @@ namespace HoshiVibe.Controllers
     public class AuthenticationController : Controller
     {
         private readonly UserService _userService;
-        public AuthenticationController(UserService userService)
+        private readonly JWTService _jwtService;
+        public AuthenticationController(UserService userService, JWTService jwtService)
         {
             _userService = userService;
+            _jwtService = jwtService;
         }
         [HttpPost("login")]
         [AllowAnonymous]
@@ -33,9 +35,11 @@ namespace HoshiVibe.Controllers
             if (user == null)
                 return Unauthorized("Tên đăng nhập/email hoặc mật khẩu không đúng.");
 
+            var jwt = _jwtService.GenerateToken(user);
             // Trả về thông tin người dùng, chưa có JWT
             return Ok(new
             {
+                Token = jwt,
                 user.User_Id,
                 user.Email,
                 user.Account,
@@ -48,11 +52,14 @@ namespace HoshiVibe.Controllers
         [AllowAnonymous]
         public IActionResult Register([FromBody] RegisterDTO request)
         {
-            if (request == null || !ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (!_userService.Register(request, out var user, out var profile))
-                return Conflict("Account đã tồn tại.");
+            if (string.IsNullOrWhiteSpace(request.Account) ||
+                string.IsNullOrWhiteSpace(request.Email) ||
+                string.IsNullOrWhiteSpace(request.Password))
+            {
+                return BadRequest("Missing required fields.");
+            }
+            if (!_userService.Register(request, out var user, out var profile, out var cart,"Customer"))
+                return Conflict("Account  đã tồn tại. Hoặc email đã được đăng ký ");
 
             return Ok(new
             {
@@ -72,8 +79,10 @@ namespace HoshiVibe.Controllers
         {
             if (string.IsNullOrWhiteSpace(request.Email))
                 return BadRequest("Email is required.");
+            if (string.IsNullOrWhiteSpace(request.Account))
+                return BadRequest("Account is required.");
 
-            if (!_userService.PasswordReset(request.Email, out var code))
+            if (!_userService.PasswordReset(request.Account,request.Email, out var code))
                 return NotFound("Email not found hoặc gửi email thất bại.");
 
             return Ok("Verification code sent to your email.");
@@ -83,14 +92,15 @@ namespace HoshiVibe.Controllers
         [AllowAnonymous]
         public IActionResult ConfirmResetPassword([FromBody] ForgotPassConfirm dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Identifier) ||
+            if (string.IsNullOrWhiteSpace(dto.Account) ||
                 string.IsNullOrWhiteSpace(dto.VerificationCode) ||
+                string.IsNullOrWhiteSpace(dto.Email) ||
                 string.IsNullOrWhiteSpace(dto.NewPassword))
             {
                 return BadRequest("Missing required fields.");
             }
 
-            if (!_userService.ConfirmPasswordReset(dto.Identifier, dto.VerificationCode, dto.NewPassword))
+            if (!_userService.ConfirmPasswordReset(dto.Email,dto.Account, dto.VerificationCode, dto.NewPassword))
                 return BadRequest("Invalid verification code hoặc email không tồn tại.");
 
             return Ok("Password has been reset successfully.");

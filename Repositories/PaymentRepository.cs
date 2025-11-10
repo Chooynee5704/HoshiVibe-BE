@@ -1,4 +1,4 @@
-﻿namespace HoshiVibe.Repositories
+namespace HoshiVibe.Repositories
 {
     public class PaymentRepository
     {

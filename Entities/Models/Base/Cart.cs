@@ -1,4 +1,4 @@
-﻿namespace HoshiVibe.Entities.Models.Base
+namespace HoshiVibe.Entities.Models.Base
 {
     public class Cart
     {

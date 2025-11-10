@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HoshiVibe.Entities.DTO.ModelRequests.Product;
 using HoshiVibe.Entities.Models.Base;
 using HoshiVibe.Entity.DTO.ModelDTO;
@@ -21,7 +21,13 @@ namespace HoshiVibe.Service
         public List<Product> Search(string keyword) {
             return _productRepo.Search(keyword).ToList();
         }
+        public List<ProductDTO> GetProposedProducts(string destiny) {
+            if (string.IsNullOrWhiteSpace(destiny))
+                throw new ArgumentException("Destiny is required");
 
+            var products = _productRepo.GetProposedProducts(destiny);
+            return _mapper.Map<List<ProductDTO>>(products);
+        }
         public bool CreateProduct(ProductRequestDTO dto, out Product? product) {
 
             product = null;
@@ -46,6 +52,8 @@ namespace HoshiVibe.Service
 
             return _productRepo.UpdateProduct(product);
         }
+
+
 
         public bool DeleteProduct(Guid productId) {
             var product = _productRepo.GetProductById(productId);

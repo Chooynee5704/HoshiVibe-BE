@@ -1,4 +1,4 @@
-﻿namespace HoshiVibe.Entity.DTO.ModelDTO
+namespace HoshiVibe.Entity.DTO.ModelDTO
 {
     public class PaymentDTO
     {

@@ -1,4 +1,4 @@
-﻿namespace HoshiVibe.Entity.DTO.ModelDTO
+namespace HoshiVibe.Entity.DTO.ModelDTO
 {
     public class ProductDTO
     {
@@ -10,6 +10,7 @@
         public required string Category { get; set; }
         public required int Stock { get; set; }
         public required string Status { get; set; }
+        public string? Destiny { get; set; }
         public string? ImageUrl { get; set; }
 
     }
