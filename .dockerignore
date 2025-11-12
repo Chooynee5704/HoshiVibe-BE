@@ -24,3 +24,5 @@
 LICENSE
 README.md
 Publish/
+bin
+obj
