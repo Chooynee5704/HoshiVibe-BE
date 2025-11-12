@@ -78,6 +78,8 @@ namespace HoshiVibe.Mapper
             CreateMap<OrderDetail, OrderDetailDTO>()
                 .ForMember(d => d.OrderDetailId, o => o.MapFrom(s => s.OrderDetail_Id))
                 .ForMember(d => d.Product, o => o.MapFrom(s => s.Product))
+                .ForMember(d => d.CustomDesignId, o => o.MapFrom(s => s.CustomDesign_Id))
+                .ForMember(d => d.CustomDesign, o => o.MapFrom(s => s.CustomDesign))
                 .ReverseMap();
 
             CreateMap<OrderDetailRequestDTO, OrderDetail>()
@@ -111,6 +113,19 @@ namespace HoshiVibe.Mapper
 
             // ===== Voucher =====
             CreateMap<Voucher, VoucherDTO>().ReverseMap();
+
+            // ===== CustomDesign =====
+            // Map CustomDesign entity to DTO so OrderDetailDTO.CustomDesign is populated
+            CreateMap<HoshiVibe.Entities.Models.Base.CustomDesign, HoshiVibe.Entities.DTO.ModelRequests.CustomDesign.CustomDesignDTO>()
+                .ForMember(d => d.CustomDesign_Id, o => o.MapFrom(s => s.CustomDesign_Id))
+                .ForMember(d => d.User_Id, o => o.MapFrom(s => s.User_Id))
+                .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))
+                .ForMember(d => d.Description, o => o.MapFrom(s => s.Description))
+                .ForMember(d => d.Price, o => o.MapFrom(s => s.Price))
+                .ForMember(d => d.RawImageBase64, o => o.MapFrom(s => s.RawImageBase64))
+                .ForMember(d => d.AiImageUrl, o => o.MapFrom(s => s.AiImageUrl))
+                .ForMember(d => d.CreatedDate, o => o.MapFrom(s => s.CreatedDate))
+                .ReverseMap();
         }
     }
 }

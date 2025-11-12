@@ -20,6 +20,7 @@ namespace HoshiVibe.Repositories
         public ICollection<OrderDetail> GetOrderDetailsByOrderId(string id) {
             return _context.OrderDetails
                 .Include(od => od.Product)
+                .Include(od => od.CustomDesign)
                 .Where(od => od.OrderId == id)
                 .OrderBy(od => od.OrderDetail_Id)
                 .ToList();

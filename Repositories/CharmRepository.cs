@@ -70,8 +70,16 @@ namespace HoshiVibe.Repositories
         // === DELETE ===
         public async Task<bool> DeleteAsync(Guid id, CancellationToken ct = default)
         {
-            var found = await _context.CustomProducts.FirstOrDefaultAsync(x => x.CProduct_Id == id, ct);
+            var found = await _context.CustomProducts
+                .Include(cp => cp.CustomDesignCharms)
+                .FirstOrDefaultAsync(x => x.CProduct_Id == id, ct);
+
             if (found == null) return false;
+
+            if (found.CustomDesignCharms != null && found.CustomDesignCharms.Count > 0)
+            {
+                _context.CustomDesignCharms.RemoveRange(found.CustomDesignCharms);
+            }
 
             _context.CustomProducts.Remove(found);
             await _context.SaveChangesAsync(ct);

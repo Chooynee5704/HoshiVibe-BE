@@ -9,6 +9,9 @@ namespace HoshiVibe.Entities.Models.Base
         public Guid? ProductId { get; set; }
 
         public Guid? CProduct_Id { get; set; }
+        
+        public Guid? CustomDesign_Id { get; set; }
+        
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }
@@ -17,5 +20,6 @@ namespace HoshiVibe.Entities.Models.Base
         // Navigation
         public Order? Order { get; set; }
         public Product? Product { get; set; }
+        public CustomDesign? CustomDesign { get; set; }
     }
 }

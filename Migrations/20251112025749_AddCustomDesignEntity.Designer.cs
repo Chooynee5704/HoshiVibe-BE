@@ -3,6 +3,7 @@ using System;
 using HoshiVibe.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HoshiVibe.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251112025749_AddCustomDesignEntity")]
+    partial class AddCustomDesignEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,6 +95,9 @@ namespace HoshiVibe.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("OrderDetailsOrderDetail_Id")
+                        .HasColumnType("uuid");
+
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
@@ -103,6 +109,8 @@ namespace HoshiVibe.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("CustomDesign_Id");
+
+                    b.HasIndex("OrderDetailsOrderDetail_Id");
 
                     b.HasIndex("User_Id");
 
@@ -251,9 +259,6 @@ namespace HoshiVibe.Migrations
                     b.Property<Guid?>("CProduct_Id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CustomDesign_Id")
-                        .HasColumnType("uuid");
-
                     b.Property<decimal>("Discount")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
@@ -276,8 +281,6 @@ namespace HoshiVibe.Migrations
                         .HasColumnType("numeric(18,2)");
 
                     b.HasKey("OrderDetail_Id");
-
-                    b.HasIndex("CustomDesign_Id");
 
                     b.HasIndex("OrderId");
 
@@ -561,10 +564,16 @@ namespace HoshiVibe.Migrations
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.CustomDesign", b =>
                 {
+                    b.HasOne("HoshiVibe.Entities.Models.Base.OrderDetail", "OrderDetails")
+                        .WithMany()
+                        .HasForeignKey("OrderDetailsOrderDetail_Id");
+
                     b.HasOne("HoshiVibe.Entities.Models.Base.User", "User")
                         .WithMany()
                         .HasForeignKey("User_Id")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("OrderDetails");
 
                     b.Navigation("User");
                 });
@@ -636,11 +645,6 @@ namespace HoshiVibe.Migrations
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.OrderDetail", b =>
                 {
-                    b.HasOne("HoshiVibe.Entities.Models.Base.CustomDesign", "CustomDesign")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("CustomDesign_Id")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("HoshiVibe.Entities.Models.Base.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
@@ -655,8 +659,6 @@ namespace HoshiVibe.Migrations
                     b.HasOne("HoshiVibe.Entities.Models.Base.Product", null)
                         .WithMany("OrderDetails")
                         .HasForeignKey("Product_Id");
-
-                    b.Navigation("CustomDesign");
 
                     b.Navigation("Order");
 
@@ -718,8 +720,6 @@ namespace HoshiVibe.Migrations
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.CustomDesign", b =>
                 {
                     b.Navigation("CustomDesignCharms");
-
-                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("HoshiVibe.Entities.Models.Base.CustomProduct", b =>

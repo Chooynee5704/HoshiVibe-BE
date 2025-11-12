@@ -11,5 +11,6 @@ namespace HoshiVibe.Entities.Models.Base
         // Navigation
         public OrderDetail? OrderDetails { get; set; }
         public User? User { get; set; }
+        public ICollection<CustomDesignCharm>? CustomDesignCharms { get; set; }
     }
 }

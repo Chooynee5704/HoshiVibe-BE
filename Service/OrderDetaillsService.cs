@@ -38,10 +38,10 @@ namespace HoshiVibe.Service
 
         public bool CreateOrderDetail(OrderDetailRequestDTO request)
         {
-            // Validate that either ProductId or CProduct_Id is provided
-            if (!request.ProductId.HasValue && !request.CProduct_Id.HasValue)
+            // Validate that either ProductId, CProduct_Id, or CustomDesign_Id is provided
+            if (!request.ProductId.HasValue && !request.CProduct_Id.HasValue && !request.CustomDesign_Id.HasValue)
             {
-                throw new Exception("ProductId hoặc CProduct_Id phải được cung cấp.");
+                throw new Exception("ProductId, CProduct_Id, hoặc CustomDesign_Id phải được cung cấp.");
             }
 
             var orderDetail = _mapper.Map<OrderDetail>(request);

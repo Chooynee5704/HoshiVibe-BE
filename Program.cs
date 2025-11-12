@@ -32,7 +32,7 @@ builder.Services.AddCors(options =>
                 "http://localhost:5173",
                 "http://localhost:5174", 
                 "http://localhost:3000",
-                "https://hoshivibe.vercel.app",
+                "https://fe-hoshi-vibe.vercel.app",
                 "https://hoshivibe-production.up.railway.app",
                 "https://*.vercel.app"
               )
@@ -78,6 +78,8 @@ builder.Services.AddScoped<CartItemRepository>();
 builder.Services.AddScoped<DestinyRepository>();
 builder.Services.AddScoped<ZodiacRepository>();
 builder.Services.AddScoped<VoucherRepository>();
+builder.Services.AddScoped<CharmRepository>();
+builder.Services.AddScoped<CustomDesignRepository>();
 
 
 
@@ -97,6 +99,8 @@ builder.Services.AddScoped<DestinyService>();
 builder.Services.AddScoped<ZodiacService>();
 builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<VoucherService>();
+builder.Services.AddScoped<CharmService>();
+builder.Services.AddScoped<CustomDesignService>();
 
 
 // Add services to the container.

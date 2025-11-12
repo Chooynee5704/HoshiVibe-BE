@@ -9,6 +9,7 @@ namespace HoshiVibe.Entities.DTO.ModelRequests.OderProcess
 
         public Guid? ProductId { get; set; }
         public Guid? CProduct_Id { get; set; }
+        public Guid? CustomDesign_Id { get; set; }
         
         [Range(1, int.MaxValue, ErrorMessage = "Quantity phải lớn hơn 0")]
         public int Quantity { get; set; }

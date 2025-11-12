@@ -22,6 +22,8 @@ namespace HoshiVibe.DB
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<CustomProduct> CustomProducts { get; set; }
+        public DbSet<CustomDesign> CustomDesigns { get; set; }
+        public DbSet<CustomDesignCharm> CustomDesignCharms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +43,8 @@ namespace HoshiVibe.DB
             modelBuilder.Entity<Cart>().HasKey(c => c.Cart_Id);
             modelBuilder.Entity<CartItem>().HasKey(ci => ci.CartItem_Id);
             modelBuilder.Entity<CustomProduct>().HasKey(cp => cp.CProduct_Id);
+            modelBuilder.Entity<CustomDesign>().HasKey(cd => cd.CustomDesign_Id);
+            modelBuilder.Entity<CustomDesignCharm>().HasKey(cdc => cdc.CustomDesignCharm_Id);
 
             // ================== RELATIONSHIPS ==================
 
@@ -87,6 +91,32 @@ namespace HoshiVibe.DB
                 entity.Property(p => p.Price).HasPrecision(18, 2);
             });
 
+            // CUSTOMDESIGN - USER (n-1)
+            modelBuilder.Entity<CustomDesign>()
+                .HasOne(cd => cd.User)
+                .WithMany()
+                .HasForeignKey(cd => cd.User_Id)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // CUSTOMDESIGN - CUSTOMDESIGNCHARM (1-n)
+            modelBuilder.Entity<CustomDesign>()
+                .HasMany(cd => cd.CustomDesignCharms)
+                .WithOne(cdc => cdc.CustomDesign)
+                .HasForeignKey(cdc => cdc.CustomDesign_Id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // CUSTOMPRODUCT - CUSTOMDESIGNCHARM (1-n)
+            modelBuilder.Entity<CustomProduct>()
+                .HasMany(cp => cp.CustomDesignCharms)
+                .WithOne(cdc => cdc.Charm)
+                .HasForeignKey(cdc => cdc.CProduct_Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CustomDesign>(entity =>
+            {
+                entity.Property(cd => cd.Price).HasPrecision(18, 2);
+            });
+
 
             // ORDER - ORDER DETAIL (1-n)
             modelBuilder.Entity<Order>()
@@ -121,6 +151,13 @@ namespace HoshiVibe.DB
                 .HasOne(od => od.Product)
                 .WithMany()
                 .HasForeignKey(od => od.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ORDERDETAIL - CUSTOMDESIGN (n-1)
+            modelBuilder.Entity<OrderDetail>()
+                .HasOne(od => od.CustomDesign)
+                .WithMany(cd => cd.OrderDetails)
+                .HasForeignKey(od => od.CustomDesign_Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // SHOPPINGCART - USER (1-1)
