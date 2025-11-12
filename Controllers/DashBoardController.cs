@@ -19,11 +19,13 @@ namespace HoshiVibe.Controllers
             var totalProducts = _dashBoardService.GetTotalProducts();
             var totalOrders = _dashBoardService.GetTotalOrders();
             var totalUsers = _dashBoardService.GetTotalUsers();
+            var totalRevenue = _dashBoardService.GetTotalRevenue();
             var stats = new
             {
                 TotalProducts = totalProducts,
                 TotalOrders = totalOrders,
-                TotalUsers = totalUsers
+                TotalUsers = totalUsers,
+                TotalRevenue = totalRevenue
             };
             return Ok(new
             {
@@ -75,6 +77,17 @@ namespace HoshiVibe.Controllers
         {
             var topSellingProducts = _dashBoardService.GetTopSellingProducts(top);
             return Ok(topSellingProducts);
+        }
+
+        [HttpGet("daily-revenue-stats")]
+        public IActionResult GetDailyRevenueStatistics([FromQuery] int month, [FromQuery] int year)
+        {
+            var data = _dashBoardService.GetDailyRevenueStatistics(month, year);
+            return Ok(new
+            {
+                Message = $"Thống kê doanh thu theo ngày của tháng {month}/{year}",
+                Data = data
+            });
         }
     }
 }

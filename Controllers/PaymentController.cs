@@ -1,6 +1,7 @@
 using HoshiVibe.DB;
 using HoshiVibe.Entities.DTO.ModelRequests.VNPay;
 using HoshiVibe.Entities.Models.Base;
+using HoshiVibe.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -17,12 +18,14 @@ namespace HoshiVibe.Controllers
         private readonly VnPayOption _opt;
         private readonly DataContext _db;
         private readonly ILogger<PaymentsController> _logger;
+        private readonly VoucherService _voucherService;
 
-        public PaymentsController(IOptions<VnPayOption> opt, DataContext db, ILogger<PaymentsController> logger)
+        public PaymentsController(IOptions<VnPayOption> opt, DataContext db, ILogger<PaymentsController> logger, VoucherService voucherService)
         {
             _opt = opt.Value;
             _db = db;
             _logger = logger;
+            _voucherService = voucherService;
         }
 
         private static string NowVnString()
@@ -36,15 +39,16 @@ namespace HoshiVibe.Controllers
 
         public sealed class CreateVnpayReq
         {
-            public string OrderId { get; set; }
+            public required string OrderId { get; set; }
             public string? BankCode { get; set; }
+            public string? VoucherCode { get; set; }
         }
 
         [HttpPost("vnpay-create")]
         public async Task<IActionResult> Create([FromBody] CreateVnpayReq req, CancellationToken ct)
         {
             _logger.LogInformation("=== VNPAY CREATE START ===");
-            _logger.LogInformation($"OrderId: {req.OrderId}");
+            _logger.LogInformation($"OrderId: {req.OrderId}, VoucherCode: {req.VoucherCode}");
 
             var order = await _db.Orders
                 .FirstOrDefaultAsync(o => o.Order_Id == req.OrderId, ct);
@@ -63,7 +67,42 @@ namespace HoshiVibe.Controllers
                 return BadRequest("Order must be Pending");
             }
 
-            long amountVnd = (long)Math.Round(order.FinalPrice, 0);
+            // Apply voucher discount if provided
+            decimal finalAmount = order.FinalPrice;
+            Guid? appliedVoucherId = null;
+
+            if (!string.IsNullOrWhiteSpace(req.VoucherCode))
+            {
+                var voucher = await _voucherService.ValidateVoucherCode(req.VoucherCode);
+                
+                if (voucher != null)
+                {
+                    _logger.LogInformation($"Voucher valid: {voucher.Code}, Discount: {voucher.DiscountAmount}");
+                    
+                    // Apply discount
+                    decimal discountAmount = order.FinalPrice * voucher.DiscountAmount;
+                    finalAmount = order.FinalPrice - discountAmount;
+                    appliedVoucherId = voucher.Voucher_Id;
+
+                    // Update order with voucher
+                    order.Voucher_Id = voucher.Voucher_Id;
+                    order.FinalPrice = finalAmount;
+                    
+                    // Increment voucher used count
+                    await _voucherService.UseVoucher(voucher.Voucher_Id);
+                    
+                    await _db.SaveChangesAsync(ct);
+                    
+                    _logger.LogInformation($"Discount applied: {discountAmount} VND, New FinalPrice: {finalAmount} VND");
+                }
+                else
+                {
+                    _logger.LogWarning($"Invalid voucher code: {req.VoucherCode}");
+                    return BadRequest(new { message = "Mã giảm giá không hợp lệ hoặc đã hết hạn" });
+                }
+            }
+
+            long amountVnd = (long)Math.Round(finalAmount, 0);
             var txnRef = $"{order.Order_Id}-{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
             var clientIp = HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1";
 
@@ -98,7 +137,7 @@ namespace HoshiVibe.Controllers
             _logger.LogInformation($"Payment URL created: {_opt.PaymentUrl}");
             _logger.LogInformation("=== VNPAY CREATE END ===");
 
-            return Ok(new { paymentUrl = url, orderId = order.Order_Id, amountVnd });
+            return Ok(new { paymentUrl = url, orderId = order.Order_Id, amountVnd, voucherApplied = appliedVoucherId != null });
         }
 
         [HttpGet("vnpay-return")]

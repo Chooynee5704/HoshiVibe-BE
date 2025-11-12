@@ -1,4 +1,5 @@
 using AutoMapper;
+using HoshiVibe.Entities.DTO;
 using HoshiVibe.Entities.DTO.ModelRequests.OderProcess;
 using HoshiVibe.Entities.DTO.ModelRequests.Product;
 using HoshiVibe.Entities.DTO.ModelRequests.User;
@@ -70,11 +71,13 @@ namespace HoshiVibe.Mapper
 
             CreateMap<Order, OrderDTO>()
                 .ForMember(d => d.Order_Id, o => o.MapFrom(s => s.Order_Id))
+                .ForMember(d => d.OrderDetails, o => o.MapFrom(s => s.OrderDetails))
                 .ReverseMap();
 
             // ===== OrderDetail =====
             CreateMap<OrderDetail, OrderDetailDTO>()
                 .ForMember(d => d.OrderDetailId, o => o.MapFrom(s => s.OrderDetail_Id))
+                .ForMember(d => d.Product, o => o.MapFrom(s => s.Product))
                 .ReverseMap();
 
             CreateMap<OrderDetailRequestDTO, OrderDetail>()
@@ -105,6 +108,9 @@ namespace HoshiVibe.Mapper
 
             CreateMap<CustomProduct, HoshiVibe.Entities.DTO.ModelRequests.Product.CustomProductDTO>()
                 .ReverseMap();
+
+            // ===== Voucher =====
+            CreateMap<Voucher, VoucherDTO>().ReverseMap();
         }
     }
 }

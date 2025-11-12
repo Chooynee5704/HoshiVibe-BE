@@ -19,7 +19,6 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpGet("getUserCart{userId}")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult GetUserCart(Guid userId)
         {
             var cart = _cartService.GetUserCart(userId);
@@ -29,7 +28,6 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpPost("create-shopping-cart")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult Create([FromBody] CartRequestDTO cartDto)
         {
             if (cartDto == null || !ModelState.IsValid)
@@ -41,7 +39,6 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpPost("add-to-cart")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult AddToCart([FromBody] CartItemsRequestDTO requestDTO)
         {
             if (requestDTO == null || !ModelState.IsValid)
@@ -55,7 +52,6 @@ namespace HoshiVibe.Controllers
 
 
         [HttpPut("update-shopping-cart-item{cartItemId}")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult Update(Guid cartItemId, [FromBody] CartItemsRequestDTO requestDTO)
         {
             if (requestDTO == null || !ModelState.IsValid)
@@ -66,7 +62,6 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpDelete("delete-shopping-cart-item{cartItemId}")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult Delete(Guid cartItemId)
         {
             if (!_cartItemsService.DeleteCartItem(cartItemId))

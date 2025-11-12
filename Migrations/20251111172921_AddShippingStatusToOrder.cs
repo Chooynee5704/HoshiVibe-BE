@@ -5,24 +5,24 @@
 namespace HoshiVibe.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedatabase : Migration
+    public partial class AddShippingStatusToOrder : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Description",
-                table: "CustomProduct",
-                newName: "Category");
+            migrationBuilder.AddColumn<string>(
+                name: "ShippingStatus",
+                table: "Orders",
+                type: "text",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Category",
-                table: "CustomProduct",
-                newName: "Description");
+            migrationBuilder.DropColumn(
+                name: "ShippingStatus",
+                table: "Orders");
         }
     }
 }

@@ -37,12 +37,33 @@ namespace HoshiVibe.Repository
                  .Include(o => o.OrderDetails)
                 .FirstOrDefault(o => o.User_Id == id);
         }
+
+        public ICollection<Order> GetAllOrdersByUserId(Guid userId)
+        {
+            return _context.Orders
+                .Include(o => o.OrderDetails!)
+                    .ThenInclude(od => od.Product)
+                .Where(o => o.User_Id == userId)
+                .OrderByDescending(o => o.OrderDate)
+                .ToList();
+        }
+
         public ICollection<Order> GetPendingOrders()
         {
             return _context.Orders
                 .Include(o => o.OrderDetails)
                 .Where(o => o.Status == "Pending")
                 .ToList();
+        }
+
+        public Order? GetUserPendingOrder(Guid userId)
+        {
+            return _context.Orders
+                .Include(o => o.OrderDetails!)
+                    .ThenInclude(od => od.Product)
+                .Where(o => o.User_Id == userId && o.Status == "Pending")
+                .OrderByDescending(o => o.OrderDate)
+                .FirstOrDefault();
         }
 
         public bool CreateOrder(Order order)
@@ -85,6 +106,31 @@ namespace HoshiVibe.Repository
                 .OrderBy(x => x.Month)
                 .ToList();
         }
+
+        // 🆕 Lấy thống kê doanh thu theo ngày trong tháng
+        public IEnumerable<object> GetDailyRevenueStatistics(int month, int year)
+        {
+            return _context.Orders
+                .Where(o => o.OrderDate.Month == month && o.OrderDate.Year == year)
+                .GroupBy(o => o.OrderDate.Day)
+                .Select(g => new
+                {
+                    Day = g.Key,
+                    TotalOrders = g.Count(),
+                    TotalRevenue = g.Sum(o => o.FinalPrice)
+                })
+                .OrderBy(x => x.Day)
+                .ToList();
+        }
+
+        // 🆕 Lấy tổng doanh thu
+        public decimal GetTotalRevenue()
+        {
+            return _context.Orders
+                .Where(o => o.Status == "Paid" || o.Status == "Completed")
+                .Sum(o => o.FinalPrice);
+        }
+
         public bool Save()
         {
             return _context.SaveChanges() > 0;

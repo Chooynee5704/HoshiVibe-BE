@@ -8,13 +8,17 @@ namespace HoshiVibe.Entities.DTO.ModelRequests.OderProcess
 
         public Guid? Voucher_Id { get; set; }
 
-        public required decimal TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
 
-        public required decimal DiscountAmount { get; set; }
-        public required decimal FinalPrice { get; set; }
-        public required string ShippingAddress { get; set; }
-        public required int PhoneNumber { get; set; }
-        public required DateTime OrderDate { get; set; } = DateTime.UtcNow;
+        public decimal DiscountAmount { get; set; }
+        public decimal FinalPrice { get; set; }
+        
+        // Optional for pending orders, required only at checkout
+        public string? ShippingAddress { get; set; }
+        public int? PhoneNumber { get; set; }
+        
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
         public string? Status { get; set; } = "Pending";
+        public string? ShippingStatus { get; set; } = "Pending";
     }
 }

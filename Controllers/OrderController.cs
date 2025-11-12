@@ -20,7 +20,6 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpGet("all")]
-        [Authorize(Roles = "Admin")]
         public IActionResult GetAllOrders()
         {
             var orders = _orderService.GetAllOrders();
@@ -28,7 +27,6 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpGet("{orderId}")]
-        [Authorize(Roles = "Admin")]
         public IActionResult GetOrderById(string orderId)
         {
             var order = _orderService.GetOrderById(orderId);
@@ -38,7 +36,6 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpGet("user/order/{userId}")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult GetOrderByUserId(Guid userId)
         {
             var order = _orderService.GetOrderByUserId(userId);
@@ -47,9 +44,32 @@ namespace HoshiVibe.Controllers
             return Ok(order);
         }
 
+        [HttpGet("user/orders/{userId}")]
+        public IActionResult GetAllOrdersByUserId(Guid userId)
+        {
+            var orders = _orderService.GetAllOrdersByUserId(userId);
+            return Ok(orders);
+        }
+
         [HttpGet("pending")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult GetPendingOrders()
+        public IActionResult GetPendingOrder()
+        {
+            // Get the current user's ID from the JWT token
+            var userIdClaim = User.FindFirst("userId");
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out Guid userId))
+            {
+                return Unauthorized("Invalid user token.");
+            }
+
+            var order = _orderService.GetUserPendingOrder(userId);
+            if (order == null)
+                return NotFound("No pending order found for the user.");
+            
+            return Ok(order);
+        }
+
+        [HttpGet("pending/all")]
+        public IActionResult GetAllPendingOrders()
         {
             var orders = _orderService.GetPendingOrders();
             return Ok(orders);
@@ -61,10 +81,10 @@ namespace HoshiVibe.Controllers
             if (request == null || !ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_orderService.CreateOrder(request))
+            var createdOrder = _orderService.CreateOrder(request);
+            if (createdOrder == null)
                 return Conflict("Đã có lỗi xảy ra!");
 
-            var createdOrder = _orderService.GetOrderByUserId(request.User_Id);
             return Ok(new
             {
                 createdOrder.User_Id,
@@ -74,11 +94,8 @@ namespace HoshiVibe.Controllers
                 createdOrder.OrderDetails,
                 Message = "Tạo mới thành công."
             });
-
-
         }
         [HttpPut("update/{orderId}")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult Update(string orderId, [FromBody] OrderRequestDTO request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -88,8 +105,19 @@ namespace HoshiVibe.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("update-shipping-status/{orderId}")]
+        public IActionResult UpdateShippingStatus(string orderId, [FromBody] UpdateShippingStatusDTO request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var ok = _orderService.UpdateShippingStatus(orderId, request.ShippingStatus);
+            if (!ok) return NotFound("Order not found or invalid shipping status.");
+
+            return Ok(new { message = "Shipping status updated successfully." });
+        }
+
         [HttpDelete("delete/{orderId}")]
-        [Authorize(Roles = "Admin")]
         public IActionResult Delete(string orderId)
         {
             var ok = _orderService.DeleteOrder(orderId);

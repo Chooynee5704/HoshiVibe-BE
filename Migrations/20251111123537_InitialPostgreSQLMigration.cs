@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace HoshiVibe.Migrations
 {
     /// <inheritdoc />
-    public partial class adjustlogic : Migration
+    public partial class InitialPostgreSQLMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,10 +16,10 @@ namespace HoshiVibe.Migrations
                 name: "Destinies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,15 +30,15 @@ namespace HoshiVibe.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Product_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Destiny = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Stock = table.Column<int>(type: "int", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Product_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Category = table.Column<string>(type: "text", nullable: false),
+                    Destiny = table.Column<string>(type: "text", nullable: true),
+                    Stock = table.Column<int>(type: "integer", nullable: false),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -48,13 +49,13 @@ namespace HoshiVibe.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    User_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Account = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsDisabled = table.Column<bool>(type: "bit", nullable: false),
-                    resetToken = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    User_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Account = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false),
+                    IsDisabled = table.Column<bool>(type: "boolean", nullable: false),
+                    resetToken = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,12 +66,12 @@ namespace HoshiVibe.Migrations
                 name: "Vouchers",
                 columns: table => new
                 {
-                    Voucher_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiscountAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Voucher_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    DiscountAmount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,12 +82,11 @@ namespace HoshiVibe.Migrations
                 name: "Zodiacs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateRange = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Url = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,10 +97,10 @@ namespace HoshiVibe.Migrations
                 name: "Carts",
                 columns: table => new
                 {
-                    Cart_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    User_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Cart_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    User_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,16 +117,16 @@ namespace HoshiVibe.Migrations
                 name: "UserProfiles",
                 columns: table => new
                 {
-                    UserProfile_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    User_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Point = table.Column<int>(type: "int", nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    Yob = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    YobDestination = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ZodiacId = table.Column<int>(type: "int", nullable: true),
-                    DestinyId = table.Column<int>(type: "int", nullable: true)
+                    UserProfile_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    User_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    AvatarUrl = table.Column<string>(type: "text", nullable: true),
+                    FullName = table.Column<string>(type: "text", nullable: false),
+                    Point = table.Column<int>(type: "integer", nullable: false),
+                    Age = table.Column<int>(type: "integer", nullable: false),
+                    Yob = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    YobDestination = table.Column<string>(type: "text", nullable: false),
+                    ZodiacId = table.Column<int>(type: "integer", nullable: true),
+                    DestinyId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -155,11 +155,11 @@ namespace HoshiVibe.Migrations
                 name: "CartItems",
                 columns: table => new
                 {
-                    CartItem_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Cart_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Product_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false)
+                    CartItem_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Cart_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Product_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -182,42 +182,48 @@ namespace HoshiVibe.Migrations
                 name: "CustomProduct",
                 columns: table => new
                 {
-                    CProduct_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OrderDetailsOrderDetail_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    CProduct_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    User_Id = table.Column<Guid>(type: "uuid", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Category = table.Column<string>(type: "text", nullable: true),
+                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    OrderDetailsOrderDetail_Id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomProduct", x => x.CProduct_Id);
+                    table.ForeignKey(
+                        name: "FK_CustomProduct_Users_User_Id",
+                        column: x => x.User_Id,
+                        principalTable: "Users",
+                        principalColumn: "User_Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
-                    Order_Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Cart_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    User_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Voucher_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    DiscountAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    FinalPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    ShippingAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Cart_Id1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CustomProductCProduct_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Order_Id = table.Column<string>(type: "text", nullable: false),
+                    Cart_Id = table.Column<Guid>(type: "uuid", nullable: true),
+                    User_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Voucher_Id = table.Column<Guid>(type: "uuid", nullable: true),
+                    TotalPrice = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    DiscountAmount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    FinalPrice = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    ShippingAddress = table.Column<string>(type: "text", nullable: false),
+                    PhoneNumber = table.Column<int>(type: "integer", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: true),
+                    CustomProductCProduct_Id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Order_Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Carts_Cart_Id1",
-                        column: x => x.Cart_Id1,
+                        name: "FK_Orders_Carts_Cart_Id",
+                        column: x => x.Cart_Id,
                         principalTable: "Carts",
                         principalColumn: "Cart_Id");
                     table.ForeignKey(
@@ -243,14 +249,14 @@ namespace HoshiVibe.Migrations
                 name: "OrderDetails",
                 columns: table => new
                 {
-                    OrderDetail_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CProduct_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Discount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Product_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    OrderDetail_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrderId = table.Column<string>(type: "text", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CProduct_Id = table.Column<Guid>(type: "uuid", nullable: true),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Discount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Product_Id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -278,12 +284,12 @@ namespace HoshiVibe.Migrations
                 name: "Payments",
                 columns: table => new
                 {
-                    Payment_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Order_Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Payment_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Order_Id = table.Column<string>(type: "text", nullable: false),
+                    PaymentMethod = table.Column<string>(type: "text", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -300,11 +306,11 @@ namespace HoshiVibe.Migrations
                 name: "PaymentTransactions",
                 columns: table => new
                 {
-                    Transaction_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Payment_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GatewayTransactionId = table.Column<int>(type: "int", nullable: false),
-                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Transaction_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Payment_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    GatewayTransactionId = table.Column<int>(type: "integer", nullable: false),
+                    TransactionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -339,6 +345,11 @@ namespace HoshiVibe.Migrations
                 column: "OrderDetailsOrderDetail_Id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomProduct_User_Id",
+                table: "CustomProduct",
+                column: "User_Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderId",
                 table: "OrderDetails",
                 column: "OrderId");
@@ -354,9 +365,9 @@ namespace HoshiVibe.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_Cart_Id1",
+                name: "IX_Orders_Cart_Id",
                 table: "Orders",
-                column: "Cart_Id1");
+                column: "Cart_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomProductCProduct_Id",
@@ -412,7 +423,7 @@ namespace HoshiVibe.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Orders_Carts_Cart_Id1",
+                name: "FK_Orders_Carts_Cart_Id",
                 table: "Orders");
 
             migrationBuilder.DropForeignKey(
@@ -422,6 +433,10 @@ namespace HoshiVibe.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_OrderDetails_Products_Product_Id",
                 table: "OrderDetails");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_CustomProduct_Users_User_Id",
+                table: "CustomProduct");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Orders_Users_User_Id",

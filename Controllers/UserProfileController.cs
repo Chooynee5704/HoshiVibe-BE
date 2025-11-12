@@ -23,7 +23,6 @@ namespace HoshiVibe.Controllers
 
 
         [HttpGet("get-user-profile/{userId}")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult GetUserProfile(Guid userId)
         {
             var profile = _profileService.GetUserProfileByUserId(userId);
@@ -32,7 +31,6 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpGet("get-all-user-informations")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult GetAllUserInformations()
         {
             var users = _profileService.GetAllUserInformations();
@@ -42,7 +40,6 @@ namespace HoshiVibe.Controllers
 
         // PUT: api/profile/update-profile/{userId}/{profileId}
         [HttpPut("update-profile/{profileId}")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult UpdateProfile(Guid profileId, [FromBody] ProfileUpdateDTO dto)
         {
             var result = _profileService.UpdateProfile(profileId, dto);
@@ -52,7 +49,6 @@ namespace HoshiVibe.Controllers
 
         // PUT: api/profile/update-user/{id}
         [HttpPut("update-user/{id}")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult UpdateUser(Guid id, [FromBody] UpdateUserDTO dto)
         {
             var result = _profileService.UpdateUser(id, dto.Email, dto.Password);
@@ -61,7 +57,7 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpPost("create-admin-account")]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public IActionResult CreateAdminAccount([FromBody] RegisterDTO request)
         {
             if (request == null || !ModelState.IsValid)
@@ -80,7 +76,6 @@ namespace HoshiVibe.Controllers
         }
 
         [HttpDelete("delete-user/{userId}")]
-        [Authorize(Roles = "Admin")]
         public IActionResult DeleteUser(Guid userId)
         {
             var result = _userService.DeleteUser(userId);

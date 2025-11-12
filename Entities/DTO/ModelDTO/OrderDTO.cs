@@ -18,6 +18,7 @@ namespace HoshiVibe.Entity.DTO.ModelDTO
         public required int PhoneNumber { get; set; }
         public required DateTime OrderDate { get; set; }
         public string? Status { get; set; } = "Pending";
+        public string? ShippingStatus { get; set; } = "Pending";
 
         public ICollection<OrderDetailDTO>? OrderDetails { get; set; }
 

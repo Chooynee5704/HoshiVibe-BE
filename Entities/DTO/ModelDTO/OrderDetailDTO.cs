@@ -1,4 +1,5 @@
 using HoshiVibe.Entities.Models.Base;
+using HoshiVibe.Entity.DTO.ModelDTO;
 
 namespace HoshiVibe.Entity.Model
 {
@@ -14,6 +15,8 @@ namespace HoshiVibe.Entity.Model
         public decimal Discount { get; set; }
         public decimal TotalPrice => UnitPrice * Quantity * (1 - Discount);
 
-
+        // Include product details for cart display
+        public ProductDTO? Product { get; set; }
     }
 }
+

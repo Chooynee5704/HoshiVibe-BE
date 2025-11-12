@@ -10,8 +10,8 @@ using HoshiVibe.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -28,9 +28,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:5174", 
+                "http://localhost:3000",
+                "https://hoshivibe.vercel.app",
+                "https://hoshivibe-production.up.railway.app",
+                "https://*.vercel.app"
+              )
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 
@@ -69,6 +77,7 @@ builder.Services.AddScoped<CartRepository>();
 builder.Services.AddScoped<CartItemRepository>();
 builder.Services.AddScoped<DestinyRepository>();
 builder.Services.AddScoped<ZodiacRepository>();
+builder.Services.AddScoped<VoucherRepository>();
 
 
 
@@ -87,6 +96,7 @@ builder.Services.AddScoped<DashBoardService>();
 builder.Services.AddScoped<DestinyService>();
 builder.Services.AddScoped<ZodiacService>();
 builder.Services.AddScoped<JWTService>();
+builder.Services.AddScoped<VoucherService>();
 
 
 // Add services to the container.
@@ -104,11 +114,12 @@ builder.Services.AddSwaggerGen( c =>
     // JWT Authentication configuration for Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
+        Description = "JWT Authorization header using the Bearer scheme. Just enter your token in the text input below (no need to type 'Bearer').",
         Name = "Authorization",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -130,7 +141,7 @@ builder.Services.AddSwaggerGen( c =>
     });
 });
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 var app = builder.Build();
 
 //builder.Services
@@ -144,6 +155,102 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
+// Apply migrations on startup
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+        
+        Console.WriteLine("Applying database migrations...");
+        context.Database.Migrate();
+        Console.WriteLine("Database migrations applied successfully ✓");
+
+        // Seed default vouchers if they don't exist
+        if (!context.Vouchers.Any())
+        {
+            Console.WriteLine("Seeding default vouchers...");
+            var defaultVouchers = new List<Voucher>
+            {
+                new Voucher
+                {
+                    Voucher_Id = Guid.NewGuid(),
+                    Code = "HOSHI10",
+                    VoucherName = "Giảm giá 10%",
+                    DiscountAmount = 0.10m,
+                    UseTime = 10,
+                    UsedCount = 0,
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddYears(1),
+                    IsActive = true
+                },
+                new Voucher
+                {
+                    Voucher_Id = Guid.NewGuid(),
+                    Code = "HOSHI20",
+                    VoucherName = "Giảm giá 20%",
+                    DiscountAmount = 0.20m,
+                    UseTime = 10,
+                    UsedCount = 0,
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddYears(1),
+                    IsActive = true
+                },
+                new Voucher
+                {
+                    Voucher_Id = Guid.NewGuid(),
+                    Code = "HOSHI30",
+                    VoucherName = "Giảm giá 30%",
+                    DiscountAmount = 0.30m,
+                    UseTime = 10,
+                    UsedCount = 0,
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddYears(1),
+                    IsActive = true
+                },
+                new Voucher
+                {
+                    Voucher_Id = Guid.NewGuid(),
+                    Code = "HOSHI40",
+                    VoucherName = "Giảm giá 40%",
+                    DiscountAmount = 0.40m,
+                    UseTime = 10,
+                    UsedCount = 0,
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddYears(1),
+                    IsActive = true
+                },
+                new Voucher
+                {
+                    Voucher_Id = Guid.NewGuid(),
+                    Code = "HOSHI50",
+                    VoucherName = "Giảm giá 50%",
+                    DiscountAmount = 0.50m,
+                    UseTime = 10,
+                    UsedCount = 0,
+                    StartDate = DateTime.UtcNow,
+                    EndDate = DateTime.UtcNow.AddYears(1),
+                    IsActive = true
+                }
+            };
+
+            context.Vouchers.AddRange(defaultVouchers);
+            context.SaveChanges();
+            Console.WriteLine("Default vouchers seeded successfully ✓");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("=== MIGRATION ERROR ===");
+        Console.WriteLine($"Type: {ex.GetType().Name}");
+        Console.WriteLine($"Message: {ex.Message}");
+        if (ex.InnerException != null)
+        {
+            Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+        }
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())
@@ -161,14 +268,11 @@ if (app.Environment.IsDevelopment())
             Console.WriteLine("Database connection: SUCCESS ✓");
             await connection.CloseAsync();
         }
-        catch (SqlException sqlEx)
+        catch (NpgsqlException npgsqlEx)
         {
-            Console.WriteLine("=== SQL EXCEPTION ===");
-            Console.WriteLine($"Message: {sqlEx.Message}");
-            Console.WriteLine($"Error Number: {sqlEx.Number}");
-            Console.WriteLine($"State: {sqlEx.State}");
-            Console.WriteLine($"Class: {sqlEx.Class}");
-            Console.WriteLine($"Server: {sqlEx.Server}");
+            Console.WriteLine("=== NPGSQL EXCEPTION ===");
+            Console.WriteLine($"Message: {npgsqlEx.Message}");
+            Console.WriteLine($"Error Code: {npgsqlEx.ErrorCode}");
         }
         catch (Exception ex)
         {
@@ -190,7 +294,7 @@ app.UseSwaggerUI();
 
 app.UseCors("AllowAll"); 
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

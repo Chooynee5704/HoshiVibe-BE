@@ -12,14 +12,15 @@ namespace HoshiVibe.Controllers
     public class OrderDetailController : Controller
     {
         private readonly OrderDetaillsService _service;
+        private readonly OrderService _orderService;
 
-        public OrderDetailController (OrderDetaillsService service)
+        public OrderDetailController(OrderDetaillsService service, OrderService orderService)
         {
             _service = service;
+            _orderService = orderService;
         }
 
         [HttpGet("order/{orderId}")]
-        [Authorize(Roles = "Admin,Customer")]
         public IActionResult GetOrderDetailsByOrderId(string orderId)
         {
             var orderDetails = _service.GetOrderDetailsByOrderId(orderId);
@@ -38,16 +39,91 @@ namespace HoshiVibe.Controllers
 
             try
             {
-                var result = _service.CreateOrderDetail(request);
-                if (!result)
-                    return StatusCode(500, new { message = "Không thể tạo OrderDetail." });
-                var createdOrderDetail = _service.GetOrderDetailsByOrderId(request.OrderId);
-                return Ok(new 
+                // Get userId from JWT token
+                var userIdClaim = User.FindFirst("userId");
+                if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out Guid userId))
                 {
-                    createdOrderDetail,
-                    message = "Tạo thành công."
+                    return Unauthorized("User not authenticated. Please login.");
                 }
-                );
+
+                // If OrderId not provided, try to get user's pending order or create new one
+                if (string.IsNullOrEmpty(request.OrderId))
+                {
+                    var pendingOrder = _orderService.GetUserPendingOrder(userId);
+                    
+                    if (pendingOrder != null)
+                    {
+                        request.OrderId = pendingOrder.Order_Id;
+                    }
+                    else
+                    {
+                        // Create a new pending order
+                        var orderRequest = new OrderRequestDTO
+                        {
+                            User_Id = userId,
+                            TotalPrice = 0,
+                            DiscountAmount = 0,
+                            FinalPrice = 0,
+                            Status = "Pending",
+                            OrderDate = DateTime.UtcNow
+                        };
+
+                        var newOrder = _orderService.CreateOrder(orderRequest);
+                        if (newOrder == null)
+                        {
+                            return StatusCode(500, new { message = "Không thể tạo đơn hàng mới." });
+                        }
+
+                        request.OrderId = newOrder.Order_Id;
+                    }
+                }
+
+                // Check if product already exists in the order
+                var existingOrderDetails = _service.GetOrderDetailsByOrderId(request.OrderId);
+                var existingDetail = existingOrderDetails?.FirstOrDefault(od => 
+                    (request.ProductId.HasValue && od.ProductId == request.ProductId) ||
+                    (request.CProduct_Id.HasValue && od.CProductId == request.CProduct_Id));
+
+                if (existingDetail != null)
+                {
+                    // Update quantity of existing order detail
+                    var updateRequest = new OrderDetailRequestDTO
+                    {
+                        OrderId = request.OrderId,
+                        ProductId = existingDetail.ProductId,
+                        CProduct_Id = existingDetail.CProductId,
+                        Quantity = existingDetail.Quantity + request.Quantity,
+                        UnitPrice = request.UnitPrice,
+                        Discount = request.Discount
+                    };
+
+                    var updateResult = _service.UpdateOrderDetail(existingDetail.OrderDetailId, updateRequest);
+                    if (!updateResult)
+                        return StatusCode(500, new { message = "Không thể cập nhật số lượng." });
+
+                    var updatedOrderDetails = _service.GetOrderDetailsByOrderId(request.OrderId);
+                    return Ok(new 
+                    {
+                        createdOrderDetail = updatedOrderDetails,
+                        orderId = request.OrderId,
+                        message = "Đã cập nhật số lượng sản phẩm trong giỏ hàng."
+                    });
+                }
+                else
+                {
+                    // Create new order detail
+                    var result = _service.CreateOrderDetail(request);
+                    if (!result)
+                        return StatusCode(500, new { message = "Không thể tạo OrderDetail." });
+                    
+                    var createdOrderDetail = _service.GetOrderDetailsByOrderId(request.OrderId);
+                    return Ok(new 
+                    {
+                        createdOrderDetail,
+                        orderId = request.OrderId,
+                        message = "Tạo thành công."
+                    });
+                }
             }
             catch (Exception ex)
             {

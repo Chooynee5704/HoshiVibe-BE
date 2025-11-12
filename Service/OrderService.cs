@@ -66,19 +66,37 @@ namespace HoshiVibe.Service
                 return null;
             return _mapper.Map<OrderDTO>(order);
         }
+
+        public ICollection<OrderDTO> GetAllOrdersByUserId(Guid userId)
+        {
+            var orders = _orderRepository.GetAllOrdersByUserId(userId);
+            return _mapper.Map<ICollection<OrderDTO>>(orders);
+        }
+
         public ICollection<OrderDTO> GetPendingOrders()
         {
             var orders = _orderRepository.GetPendingOrders();
             return _mapper.Map<ICollection<OrderDTO>>(orders);
         }
-        public bool CreateOrder(OrderRequestDTO orderRequest)
-        {
 
+        public OrderDTO? GetUserPendingOrder(Guid userId)
+        {
+            var order = _orderRepository.GetUserPendingOrder(userId);
+            if (order == null)
+                return null;
+            return _mapper.Map<OrderDTO>(order);
+        }
+        public OrderDTO? CreateOrder(OrderRequestDTO orderRequest)
+        {
             var order = _mapper.Map<Order>(orderRequest);
             order.Order_Id = new Random().Next(100000, 999999).ToString();
             order.OrderDate = DateTime.UtcNow;
             order.Status = "Pending";
-            return _orderRepository.CreateOrder(order);
+            
+            if (!_orderRepository.CreateOrder(order))
+                return null;
+            
+            return _mapper.Map<OrderDTO>(order);
         }
         public bool UpdateOrder(string id, OrderRequestDTO orderRequest)
         {
@@ -88,6 +106,22 @@ namespace HoshiVibe.Service
             var updatedOrder = _mapper.Map(orderRequest, existingOrder);
             return _orderRepository.UpdateOrder(updatedOrder);
         }
+
+        public bool UpdateShippingStatus(string orderId, string shippingStatus)
+        {
+            var order = _orderRepository.GetOrderById(orderId);
+            if (order == null)
+                return false;
+
+            // Validate shipping status
+            var validStatuses = new[] { "Pending", "Shipping", "Delivered", "PickedUp" };
+            if (!validStatuses.Contains(shippingStatus, StringComparer.OrdinalIgnoreCase))
+                return false;
+
+            order.ShippingStatus = shippingStatus;
+            return _orderRepository.UpdateOrder(order);
+        }
+
         public bool DeleteOrder(string id)
         {
             var existingOrder = _orderRepository.GetOrderById(id);

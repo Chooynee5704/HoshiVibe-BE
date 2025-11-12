@@ -1,6 +1,7 @@
 using HoshiVibe.DB;
 using HoshiVibe.Entities.DTO.ModelRequests.OderProcess;
 using HoshiVibe.Entities.Models.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace HoshiVibe.Repositories
 {
@@ -12,11 +13,13 @@ namespace HoshiVibe.Repositories
         }
         public OrderDetail? GetOrderDetailById(Guid id) {
             return _context.OrderDetails
+                .Include(od => od.Product)
                 .FirstOrDefault(od => od.OrderDetail_Id == id);
         }
 
         public ICollection<OrderDetail> GetOrderDetailsByOrderId(string id) {
             return _context.OrderDetails
+                .Include(od => od.Product)
                 .Where(od => od.OrderId == id)
                 .OrderBy(od => od.OrderDetail_Id)
                 .ToList();

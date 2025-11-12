@@ -83,38 +83,51 @@ namespace HoshiVibe.Service
             return _orderRepository.GetMonthlyOrderStatistics(year);
         }
 
+        // 🆕 Thống kê theo ngày trong tháng
+        public IEnumerable<object> GetDailyRevenueStatistics(int month, int year)
+        {
+            return _orderRepository.GetDailyRevenueStatistics(month, year);
+        }
+
+        // 🆕 Lấy tổng doanh thu
+        public decimal GetTotalRevenue()
+        {
+            return _orderRepository.GetTotalRevenue();
+        }
+
         public object GetTopSellingProducts(int topN)
         {
-            var productSales = new Dictionary<Guid, int>();
             var orders = _orderRepository.GetAllOrders();
-            foreach (var order in orders)
-            {
-                foreach (var detail in order.OrderDetails)
+            var products = _productRepository.Search("");
+
+            var productSales = orders
+                .Where(o => o.OrderDetails != null)
+                .SelectMany(o => o.OrderDetails!)
+                .Where(od => od.ProductId.HasValue)
+                .GroupBy(od => od.ProductId!.Value)
+                .Select(g => new
                 {
-                    if (detail.ProductId.HasValue)
-                    {
-                        var productId = detail.ProductId.Value;
-                        if (productSales.ContainsKey(productId))
-                        {
-                            productSales[productId] += detail.Quantity;
-                        }
-                        else
-                        {
-                            productSales[productId] = detail.Quantity;
-                        }
-                    }
-                }
-            }
-            var topSellingProducts = productSales
-                .OrderByDescending(ps => ps.Value)
-                .Take(topN)
-                .Select(ps => new
-                {
-                    ProductId = ps.Key,
-                    TotalSold = ps.Value
+                    ProductId = g.Key,
+                    TotalQuantitySold = g.Sum(od => od.Quantity),
+                    TotalRevenue = g.Sum(od => od.Quantity * od.UnitPrice - od.Discount)
                 })
+                .OrderByDescending(x => x.TotalRevenue)
+                .Take(topN)
                 .ToList();
-            return topSellingProducts;
+
+            var result = from ps in productSales
+                         join p in products on ps.ProductId equals p.Product_Id
+                         select new
+                         {
+                             Product_Id = p.Product_Id,
+                             Name = p.Name,
+                             Category = p.Category ?? "Khác",
+                             ImageUrl = p.ImageUrl,
+                             TotalQuantitySold = ps.TotalQuantitySold,
+                             TotalRevenue = ps.TotalRevenue
+                         };
+
+            return result.ToList();
         }
     }
 }
