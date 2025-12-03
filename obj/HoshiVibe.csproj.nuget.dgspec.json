@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Vkev\\Repos\\MeoNhu\\Hoshivibe\\HoshiVibe-BE\\HoshiVibe.csproj": {}
+    "C:\\Vkev\\Repos\\HoshiVibe-BE\\HoshiVibe.csproj": {}
   },
   "projects": {
-    "C:\\Vkev\\Repos\\MeoNhu\\Hoshivibe\\HoshiVibe-BE\\HoshiVibe.csproj": {
+    "C:\\Vkev\\Repos\\HoshiVibe-BE\\HoshiVibe.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Vkev\\Repos\\MeoNhu\\Hoshivibe\\HoshiVibe-BE\\HoshiVibe.csproj",
+        "projectUniqueName": "C:\\Vkev\\Repos\\HoshiVibe-BE\\HoshiVibe.csproj",
         "projectName": "HoshiVibe",
-        "projectPath": "C:\\Vkev\\Repos\\MeoNhu\\Hoshivibe\\HoshiVibe-BE\\HoshiVibe.csproj",
-        "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-        "outputPath": "C:\\Vkev\\Repos\\MeoNhu\\Hoshivibe\\HoshiVibe-BE\\obj\\",
+        "projectPath": "C:\\Vkev\\Repos\\HoshiVibe-BE\\HoshiVibe.csproj",
+        "packagesPath": "C:\\Users\\khang\\.nuget\\packages\\",
+        "outputPath": "C:\\Vkev\\Repos\\HoshiVibe-BE\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\huynh\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\khang\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -95,6 +89,10 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[8.14.0, )"
+            },
+            "payOS": {
+              "target": "Package",
+              "version": "[2.0.1, )"
             }
           },
           "imports": [
@@ -111,19 +109,19 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.19, 8.0.19]"
+              "version": "[8.0.22, 8.0.22]"
             },
             {
               "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.19, 8.0.19]"
+              "version": "[8.0.22, 8.0.22]"
             },
             {
               "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.19, 8.0.19]"
+              "version": "[8.0.22, 8.0.22]"
             },
             {
               "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.19, 8.0.19]"
+              "version": "[8.0.22, 8.0.22]"
             }
           ],
           "frameworkReferences": {
@@ -134,7 +132,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

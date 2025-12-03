@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HoshiVibe")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+31932a83480e03d8eb7c56882252498feb3633c6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bc8a3833ba027fbd31ef8dd5232110d92dafcc4b")]
 [assembly: System.Reflection.AssemblyProductAttribute("HoshiVibe")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HoshiVibe")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

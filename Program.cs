@@ -1,6 +1,7 @@
 using AutoMapper;
 using HoshiVibe.DB;
 using HoshiVibe.Entities.DTO.ModelRequests.VNPay;
+using HoshiVibe.Entities.DTO.ModelRequests.PayOSModels;
 using HoshiVibe.Entities.Models.Base;
 using HoshiVibe.Entities.Models.Momo;
 using HoshiVibe.Mapper;
@@ -23,6 +24,7 @@ builder.Services.AddDataProtection()
     .SetApplicationName("HoshiVibe");
 
 builder.Services.Configure<VnPayOption>(builder.Configuration.GetSection("VnPay"));
+builder.Services.Configure<PayOSOption>(builder.Configuration.GetSection("PayOS"));
 
 builder.Services.AddCors(options =>
 {
@@ -105,10 +107,12 @@ builder.Services.AddScoped<CustomDesignService>();
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddHttpClient();
 
 // MomoAPI
 builder.Services.Configure<MomoModel>(builder.Configuration.GetSection("MomoAPI"));
 builder.Services.AddScoped<MomoService>();
+builder.Services.AddScoped<PayOSService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
