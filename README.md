@@ -1,6 +1,6 @@
 # HoshiVibe Backend
 
-Backend API cho HoshiVibe Web, xây dựng với ASP.NET Core 8. Tập trung vào hiệu năng, bảo mật và quy trình nghiệp vụ cho sản phẩm/đơn hàng.
+Backend API for HoshiVibe Web, built with ASP.NET Core 8. Focused on performance, security, and core commerce workflows.
 
 - Live site: https://fe-hoshi-vibe.vercel.app/
 
@@ -8,8 +8,8 @@ Backend API cho HoshiVibe Web, xây dựng với ASP.NET Core 8. Tập trung và
 
 <p align="center">
   <img src="image/home.png" width="32%" alt="Home" />
-  <img src="image/sanpham.png" width="32%" alt="San pham" />
-  <img src="image/gioithieu.png" width="32%" alt="Gioi thieu" />
+  <img src="image/sanpham.png" width="32%" alt="Products" />
+  <img src="image/gioithieu.png" width="32%" alt="About" />
 </p>
 
 ## Features
@@ -34,4 +34,4 @@ dotnet restore
 dotnet run
 ```
 
-Cấu hình môi trường trong `.env` hoặc `appsettings.json`. Swagger mặc định tại `http://localhost:5243/swagger` (hoặc `https://localhost:7217/swagger`).
+Configuration: use `.env` or `appsettings.json`. Swagger is available at `http://localhost:5243/swagger` (or `https://localhost:7217/swagger`).
